@@ -66,7 +66,7 @@ request-time API under Cache Components).
   A new prompt version gets a new file (`triage_v2.md`) and `TRIAGE_PROMPT_VERSION`; don't edit a measured prompt in place.
 - `tests/api/`: route-handler tests on PGlite with real Better Auth sessions (only `getDb`/`getAuth`/`headers` are swapped).
 - `src/server/knowledge/`: `chunk.ts` (markdown chunker), `embeddings.ts` (local model, `embed(texts, "query" | "passage")`),
-  `documents.ts` (upload checks, add / index / list / delete), `search.ts` (hybrid search), `embedder.ts` (env-aware, may be null).
+  `documents.ts` (upload checks, add / index / list / delete), `extract.ts` (PDF via unpdf, DOCX via mammoth), `search.ts` (hybrid search), `embedder.ts` (env-aware, may be null).
 - `src/server/ai/claude.ts`: `callStructured` (structured output, fallbacks, usage). `answer.ts`: `askKnowledgeBase`.
   `drafts.ts`: `generateDraft` (help articles only, holding-reply fallback), `reviewDraft` (the human approval step).
   Tests use `tests/ai/mock-knowledge.ts` (mock embedder, answer and draft models).

@@ -104,12 +104,18 @@ shows a warning banner, and an **Injection** badge in the inbox. Priority is sho
 
 `/knowledge` answers staff questions from the company's own documents.
 
-- **Upload** (admins, `document:manage`): `.md` / `.txt` up to 900 KB, as a help article (may be
+- **Upload** (admins, `document:manage`): `.md`, `.txt`, `.pdf` or `.docx` up to 4 MB, as a help article (may be
   quoted to customers) or an internal runbook. The file is split into sections by heading
   (`src/server/knowledge/chunk.ts`), stored, and embedded locally with `multilingual-e5-small`
   (free, CPU, ~110 MB of memory, nothing leaves the server). The same file twice is rejected.
   If embedding fails, the document still works with keyword search and admins get a
-  **Re-index** button. PDF and Word files are not supported yet.
+  **Re-index** button.
+- **PDF and Word** (`src/server/knowledge/extract.ts`): the file's first bytes must match its
+  extension. PDF text comes from [unpdf](https://github.com/unjs/unpdf) (pdf.js, no native code),
+  page by page; Word files go through [mammoth](https://github.com/mwilliamson/mammoth.js) and
+  their headings become `#` headings, so sections still split by heading. Mammoth never follows
+  links to external files, images are dropped, and more than 2 million extracted characters are
+  rejected. Scanned PDFs without a text layer are refused (no OCR).
 - **Search** (`src/server/knowledge/search.ts`): semantic (pgvector cosine) and keyword
   (Postgres full-text, any of the question's words) candidates merged with reciprocal rank
   fusion, over the tenant's ready documents only. The semantic half matches across languages
@@ -380,12 +386,12 @@ Embeddings need no key: the model (~130 MB) downloads from Hugging Face on first
 - **API and AI integration:** the real route handlers with real Better Auth sessions (tickets,
   email intake, PATCH, idempotency, size limits, rate limits, tenant isolation), triage, the
   knowledge base, draft replies and analytics, all on PGlite with MOCK models and embedder.
-- **E2E (Playwright, `npm run test:e2e`):** 13 browser tests against the running app, using the
+- **E2E (Playwright, `npm run test:e2e`):** 15 browser tests against the running app, using the
   installed Microsoft Edge (no browser download). Sign-in (form, wrong password, Try as Guest,
   redirects), role restrictions, security headers, an agent's ticket workflow (search, assign
   to me, reply, resolve, the "Mine" filter), incidents (create, link a ticket, resolve; viewers
   can't edit), the knowledge base (upload, duplicate rejected,
-  English and Hinglish search, delete; viewers can't upload) and analytics (tiles, chart hover,
+  English and Hinglish search, delete, PDF and Word uploads; viewers can't upload) and analytics (tiles, chart hover,
   table view, range switch). Start the app first (`npm run build && npm run start`, demo
   accounts seeded). Tests run one at a time, reuse saved sessions (the app allows 5 sign-ins
   per minute), and label everything they create "[E2E]"; created tickets stay in the database.
@@ -511,7 +517,7 @@ Docker instead. The build needs no secrets, startup validates the environment, a
 3. ✅ Tickets: create API (JSON + raw email, API keys), job queue, inbox list / filter / search /
    paginate, detail page, status workflow, assignment, agent replies, guest demo login
 4. ✅ Knowledge base: upload (.md / .txt), chunk, local embeddings, hybrid retrieval, cited
-   answers + fallback, search-only mode without a key; PDF / Word upload still to do
+   answers + fallback, search-only mode without a key, ✅ PDF / Word upload
 5. AI copilot: ✅ triage (PII redaction, structured classification, routing, injection flag,
    token and latency tracking, golden-set eval script; eval not yet run), ✅ cited draft
    replies with approve / edit / reject and an approvals queue, ✅ outbound reply email (Resend)

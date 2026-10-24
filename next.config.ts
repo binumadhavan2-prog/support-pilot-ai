@@ -58,6 +58,8 @@ const nextConfig: NextConfig = {
   experimental: {
     // Enables forbidden() / unauthorized() for role-based page access.
     authInterrupts: true,
+    // Knowledge-base uploads (PDF / Word) of up to 4 MB, plus multipart overhead.
+    serverActions: { bodySizeLimit: "5mb" },
   },
   cacheComponents: true,
   partialPrefetching: true,

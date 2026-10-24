@@ -77,7 +77,7 @@ async function Content() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <UploadForm maxKb={Math.floor(MAX_DOCUMENT_BYTES / 1024)} />
+            <UploadForm maxMb={MAX_DOCUMENT_BYTES / (1024 * 1024)} />
           </CardContent>
         </Card>
       )}

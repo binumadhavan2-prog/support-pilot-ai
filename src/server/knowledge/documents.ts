@@ -8,16 +8,19 @@ import { AppError } from "@/lib/errors";
 import type { Logger } from "@/lib/logger";
 import { recordAudit } from "../audit";
 import { chunkMarkdown } from "./chunk";
+import { extractDocxText, extractPdfText } from "./extract";
 
-/** Under Next's 1 MB server-action body limit, with room for the rest of the form. */
-export const MAX_DOCUMENT_BYTES = 900 * 1024;
+/** Kept under the 5 MB server-action body limit in next.config.ts, with room for the form. */
+export const MAX_DOCUMENT_BYTES = 4 * 1024 * 1024;
 
-/** Plain text formats only for now; PDF and DOCX need a parser and are not supported yet. */
-export const ACCEPTED_EXTENSIONS = [".md", ".markdown", ".txt"] as const;
-const MIME_BY_EXTENSION: Record<(typeof ACCEPTED_EXTENSIONS)[number], string> = {
+export const ACCEPTED_EXTENSIONS = [".md", ".markdown", ".txt", ".pdf", ".docx"] as const;
+type Extension = (typeof ACCEPTED_EXTENSIONS)[number];
+const MIME_BY_EXTENSION: Record<Extension, string> = {
   ".md": "text/markdown",
   ".markdown": "text/markdown",
   ".txt": "text/plain",
+  ".pdf": "application/pdf",
+  ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 };
 
 export const DOCUMENT_KINDS = documentKind.enumValues;
@@ -45,28 +48,51 @@ export function documentTitle(filename: string, text: string) {
   return (heading || base || "Untitled").slice(0, 200);
 }
 
-/** Validates an uploaded file and decodes it as UTF-8 text. */
-export async function readUpload(file: { name: string; size: number; text(): Promise<string> }) {
-  const extension = extensionOf(file.name);
-  if (!(ACCEPTED_EXTENSIONS as readonly string[]).includes(extension)) {
-    throw new AppError(
-      "VALIDATION_ERROR",
-      `Only ${ACCEPTED_EXTENSIONS.join(", ")} files are supported for now`,
-    );
-  }
-  if (file.size === 0) throw new AppError("VALIDATION_ERROR", "The file is empty");
-  if (file.size > MAX_DOCUMENT_BYTES) {
-    throw new AppError("VALIDATION_ERROR", "The file is larger than 900 KB");
-  }
-  const text = (await file.text()).replace(/^\uFEFF/, "");
-  // A text file full of NUL or replacement characters is almost certainly binary.
+function isAccepted(extension: string): extension is Extension {
+  return (ACCEPTED_EXTENSIONS as readonly string[]).includes(extension);
+}
+
+/** Decodes UTF-8, rejecting files that are clearly binary (NUL or many replacement characters). */
+function decodeText(bytes: Uint8Array) {
+  const text = new TextDecoder("utf-8").decode(bytes).replace(/^\uFEFF/, "");
   if (text.includes("\u0000") || (text.match(/\uFFFD/g)?.length ?? 0) > 20) {
     throw new AppError("VALIDATION_ERROR", "The file does not look like UTF-8 text");
   }
-  if (!text.trim()) throw new AppError("VALIDATION_ERROR", "The file has no text");
+  return text;
+}
+
+/** Validates an uploaded file (type by extension and content, size) and extracts its text. */
+export async function readUpload(file: {
+  name: string;
+  size: number;
+  arrayBuffer(): Promise<ArrayBuffer>;
+}) {
+  const extension = extensionOf(file.name);
+  if (!isAccepted(extension)) {
+    throw new AppError("VALIDATION_ERROR", "Upload a .md, .txt, .pdf or .docx file");
+  }
+  if (file.size === 0) throw new AppError("VALIDATION_ERROR", "The file is empty");
+  if (file.size > MAX_DOCUMENT_BYTES) {
+    throw new AppError("VALIDATION_ERROR", "The file is larger than 4 MB");
+  }
+  const bytes = new Uint8Array(await file.arrayBuffer());
+  const text =
+    extension === ".pdf"
+      ? await extractPdfText(bytes)
+      : extension === ".docx"
+        ? await extractDocxText(bytes)
+        : decodeText(bytes);
+  if (!text.trim()) {
+    throw new AppError(
+      "VALIDATION_ERROR",
+      extension === ".pdf"
+        ? "The PDF has no text layer (scanned pages need OCR, which is not supported)"
+        : "The file has no text",
+    );
+  }
   return {
     filename: file.name.slice(0, 255),
-    mimeType: MIME_BY_EXTENSION[extension as keyof typeof MIME_BY_EXTENSION],
+    mimeType: MIME_BY_EXTENSION[extension],
     sizeBytes: file.size,
     text,
   };

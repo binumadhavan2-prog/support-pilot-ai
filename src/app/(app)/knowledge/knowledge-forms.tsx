@@ -126,7 +126,7 @@ function SourceList({ sources }: { sources: AskSource[] }) {
   );
 }
 
-export function UploadForm({ maxKb }: { maxKb: number }) {
+export function UploadForm({ maxMb }: { maxMb: number }) {
   const [state, formAction, pending] = useActionState(uploadDocumentAction, idleState);
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -143,12 +143,12 @@ export function UploadForm({ maxKb }: { maxKb: number }) {
       )}
       <div className="grid gap-4 sm:grid-cols-3">
         <div className="flex flex-col gap-1.5 sm:col-span-2">
-          <Label htmlFor="doc-file">File (.md or .txt, up to {maxKb} KB)</Label>
+          <Label htmlFor="doc-file">File (.md, .txt, .pdf or .docx, up to {maxMb} MB)</Label>
           <Input
             id="doc-file"
             name="file"
             type="file"
-            accept=".md,.markdown,.txt,text/markdown,text/plain"
+            accept=".md,.markdown,.txt,.pdf,.docx,text/markdown,text/plain,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
             required
           />
         </div>
