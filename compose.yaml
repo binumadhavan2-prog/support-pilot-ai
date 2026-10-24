@@ -1,0 +1,82 @@
+# Full local stack: Postgres + pgvector, migrations, the web app and the job worker.
+#
+#   cp .env.example .env    # set BETTER_AUTH_SECRET (and ANTHROPIC_API_KEY for AI features)
+#   docker compose up --build
+#
+# Compose reads variables from .env in this folder. DATABASE_URL in that file is ignored here:
+# containers always use the bundled database below.
+
+x-tools: &tools
+  build:
+    context: .
+    target: tools
+  image: support-pilot-ai-tools
+  environment: &tools-env
+    DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD:-postgres}@db:5432/support_pilot
+    BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET:?Set BETTER_AUTH_SECRET in .env (openssl rand -base64 32)}
+    BETTER_AUTH_URL: ${BETTER_AUTH_URL:-http://localhost:3000}
+    ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+    TRIAGE_MODEL: ${TRIAGE_MODEL:-}
+    ANSWER_MODEL: ${ANSWER_MODEL:-}
+    SEED_MODEL: ${SEED_MODEL:-}
+    DEMO_USER_PASSWORD: ${DEMO_USER_PASSWORD:-}
+    LOG_LEVEL: ${LOG_LEVEL:-}
+
+services:
+  db:
+    image: pgvector/pgvector:pg17
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: support_pilot
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    # Bound to localhost only, so host tools (psql, drizzle-kit studio) can connect.
+    ports:
+      - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d support_pilot"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # Applies drizzle/ migrations once, then exits. The app and worker wait for it to succeed.
+  migrate:
+    <<: *tools
+    command: ["node_modules/.bin/drizzle-kit", "migrate"]
+    restart: "no"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  app:
+    build:
+      context: .
+      target: runner
+    image: support-pilot-ai
+    environment:
+      <<: *tools-env
+      SEMANTIC_SEARCH: ${SEMANTIC_SEARCH:-on}
+    ports:
+      - "${APP_PORT:-3000}:3000"
+    volumes:
+      - model-cache:/app/.cache
+    restart: unless-stopped
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+
+  # Runs queued jobs (AI triage). Without ANTHROPIC_API_KEY, triage jobs retry, then end as failed.
+  worker:
+    <<: *tools
+    init: true
+    volumes:
+      - model-cache:/app/.cache
+    restart: unless-stopped
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+
+volumes:
+  pgdata:
+  model-cache:

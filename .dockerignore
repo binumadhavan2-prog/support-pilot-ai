@@ -1,0 +1,25 @@
+# Keep the build context small and secret-free. node_modules is installed inside the image
+# (linux binaries), and .next is rebuilt there.
+node_modules
+.next
+.git
+.github
+.vercel
+coverage
+playwright-report
+tests/e2e/.auth
+tests/e2e/.results
+*.tsbuildinfo
+next-env.d.ts
+
+# Secrets and local caches
+.env*
+!.env.example
+.cache
+seed/data/.partial
+*.pem
+
+# Docker files themselves (changing them should not bust the COPY . . layer)
+Dockerfile
+.dockerignore
+compose.yaml

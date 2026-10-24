@@ -1,0 +1,6 @@
+.next
+node_modules
+coverage
+drizzle/meta
+package-lock.json
+next-env.d.ts
