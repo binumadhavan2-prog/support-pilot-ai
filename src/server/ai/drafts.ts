@@ -7,6 +7,7 @@ import type { AnyDatabase } from "@/db/types";
 import { AppError } from "@/lib/errors";
 import type { Logger } from "@/lib/logger";
 import { recordAudit } from "../audit";
+import { planReplyEmail, queueReplyEmail } from "../email/outbound";
 import { searchKnowledge, type EmbedQuery } from "../knowledge/search";
 import { citedNumbers } from "./answer";
 import {
@@ -271,6 +272,7 @@ export async function reviewDraft(
   db: AnyDatabase,
   { tenantId, reviewer }: { tenantId: string; reviewer: { id: string; name: string } },
   input: ReviewInput,
+  { emailEnabled = false }: { emailEnabled?: boolean } = {},
 ) {
   return db.transaction(async (tx) => {
     const [draft] = await tx
@@ -318,18 +320,29 @@ export async function reviewDraft(
       .returning({ id: aiDrafts.id });
     if (!row) throw new AppError("CONFLICT", "This draft was already reviewed");
 
-    await tx.insert(ticketMessages).values({
-      tenantId,
-      ticketId: draft.ticketId,
-      authorType: "agent",
-      authorId: reviewer.id,
-      body: finalBody,
-      sourceDraftId: draft.id,
-    });
     const [ticket] = await tx
-      .select({ status: tickets.status, firstResponseAt: tickets.firstResponseAt })
+      .select({
+        status: tickets.status,
+        firstResponseAt: tickets.firstResponseAt,
+        customerEmail: tickets.customerEmail,
+        externalRef: tickets.externalRef,
+      })
       .from(tickets)
       .where(and(eq(tickets.id, draft.ticketId), eq(tickets.tenantId, tenantId)));
+    const plan = planReplyEmail(ticket, { enabled: emailEnabled });
+    const [message] = await tx
+      .insert(ticketMessages)
+      .values({
+        tenantId,
+        ticketId: draft.ticketId,
+        authorType: "agent",
+        authorId: reviewer.id,
+        body: finalBody,
+        sourceDraftId: draft.id,
+        ...plan,
+      })
+      .returning({ id: ticketMessages.id });
+    await queueReplyEmail(tx, { tenantId, messageId: message.id, plan });
     await tx
       .update(tickets)
       .set({
@@ -349,7 +362,7 @@ export async function reviewDraft(
       },
       tx,
     );
-    return { status, ticketId: draft.ticketId };
+    return { status, ticketId: draft.ticketId, emailStatus: plan.emailStatus };
   });
 }
 

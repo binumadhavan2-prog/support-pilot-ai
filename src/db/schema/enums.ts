@@ -13,6 +13,11 @@ export const ticketCategory = pgEnum("ticket_category", [
 ]);
 export const ticketSentiment = pgEnum("ticket_sentiment", ["positive", "neutral", "negative"]);
 export const messageAuthorType = pgEnum("message_author_type", ["customer", "agent", "system"]);
+/**
+ * Delivery of an agent reply to the customer by email. `skipped`: deliberately not sent (email not
+ * configured, demo ticket, or a reserved test address); the reason is in `email_detail`.
+ */
+export const emailStatus = pgEnum("email_status", ["queued", "sent", "failed", "skipped"]);
 
 export const draftStatus = pgEnum("draft_status", ["pending", "approved", "edited", "rejected"]);
 /** Whether retrieved evidence was sufficient; `insufficient_evidence` triggers the fallback reply. */

@@ -1,11 +1,13 @@
 /**
  * Background job worker: runs queued jobs (e.g. triage_ticket) until stopped with Ctrl+C.
- * Triage calls the Claude API (needs ANTHROPIC_API_KEY; each ticket is one paid request).
+ * Triage calls the Claude API (needs ANTHROPIC_API_KEY; each ticket is one paid request). Reply
+ * emails go through Resend when RESEND_API_KEY is set.
  *
  *   npm run jobs:work
  */
 import { logger } from "@/lib/logger";
 import { getTriageModel } from "@/server/ai/model";
+import { getMailer } from "@/server/email/mailer";
 import { processNextJob } from "@/server/jobs";
 import { createScriptAuth } from "./lib/script-auth";
 
@@ -23,12 +25,13 @@ for (const signal of ["SIGINT", "SIGTERM"] as const) {
 logger.info("worker started");
 try {
   while (!stopping) {
-    const result = await processNextJob(db, { triageModel: getTriageModel }).catch(
-      (error: unknown) => {
-        logger.error({ err: error }, "worker: could not poll the queue");
-        return null;
-      },
-    );
+    const result = await processNextJob(db, {
+      triageModel: getTriageModel,
+      mailer: getMailer,
+    }).catch((error: unknown) => {
+      logger.error({ err: error }, "worker: could not poll the queue");
+      return null;
+    });
     // Drain the queue quickly; poll slowly when it is empty.
     if (!result) await new Promise((resolve) => setTimeout(resolve, IDLE_DELAY_MS));
   }

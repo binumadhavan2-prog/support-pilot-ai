@@ -10,6 +10,7 @@ import { toActionError } from "@/server/action-error";
 import { generateDraft, reviewDraft, reviewSchema } from "@/server/ai/drafts";
 import { getDraftModel } from "@/server/ai/model";
 import { requirePermission } from "@/server/auth/session";
+import { isEmailConfigured } from "@/server/email/mailer";
 import { getEmbedder } from "@/server/knowledge/embedder";
 import { TICKET_STATUSES, addAgentReply, updateTicket } from "@/server/tickets";
 
@@ -68,6 +69,7 @@ export async function reviewDraftAction(
       getDb(),
       { tenantId: user.tenantId, reviewer: { id: user.id, name: user.name } },
       input,
+      { emailEnabled: isEmailConfigured() },
     );
     revalidatePath(`/tickets/${result.ticketId}`);
     revalidatePath("/approvals");
@@ -77,7 +79,7 @@ export async function reviewDraftAction(
       message:
         result.status === "rejected"
           ? "Draft rejected."
-          : "Reply approved and added to the conversation.",
+          : `Reply approved and added to the conversation${emailNote(result.emailStatus)}`,
     };
   } catch (error) {
     return toActionError(error, "reviewDraft");
@@ -117,15 +119,23 @@ export async function replyAction(_prev: ActionState, formData: FormData): Promi
     const { ticketId, body } = z
       .object({ ticketId: z.string().min(1), body: z.string() })
       .parse(Object.fromEntries(formData));
-    await addAgentReply(
+    const message = await addAgentReply(
       getDb(),
       { tenantId: user.tenantId, ticketId, authorId: user.id },
       { body },
+      { emailEnabled: isEmailConfigured() },
     );
     revalidatePath(`/tickets/${ticketId}`);
     revalidatePath("/inbox");
-    return { status: "success", message: "Reply added to the conversation." };
+    return {
+      status: "success",
+      message: `Reply added to the conversation${emailNote(message.emailStatus)}`,
+    };
   } catch (error) {
     return toActionError(error, "reply");
   }
+}
+
+function emailNote(emailStatus: string | null) {
+  return emailStatus === "queued" ? " and queued for email." : ".";
 }

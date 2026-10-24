@@ -5,6 +5,7 @@ import { ticketCategory, ticketPriority, ticketStatus } from "@/db/schema/enums"
 import type { AnyDatabase } from "@/db/types";
 import { AppError } from "@/lib/errors";
 import { recordAudit } from "./audit";
+import { planReplyEmail, queueReplyEmail } from "./email/outbound";
 import { enqueueJob } from "./jobs";
 
 export const TICKET_STATUSES = ticketStatus.enumValues;
@@ -231,6 +232,9 @@ export async function getTicket(db: AnyDatabase, tenantId: string, ticketId: str
       authorName: user.name,
       body: ticketMessages.body,
       sourceDraftId: ticketMessages.sourceDraftId,
+      emailStatus: ticketMessages.emailStatus,
+      emailDetail: ticketMessages.emailDetail,
+      emailSentAt: ticketMessages.emailSentAt,
       createdAt: ticketMessages.createdAt,
     })
     .from(ticketMessages)
@@ -374,20 +378,28 @@ export async function addAgentReply(
   db: AnyDatabase,
   { tenantId, ticketId, authorId }: { tenantId: string; ticketId: string; authorId: string },
   input: { body: string },
+  { emailEnabled = false }: { emailEnabled?: boolean } = {},
 ) {
   const { body } = replySchema.parse(input);
   if (!ticketIdSchema.safeParse(ticketId).success)
     throw new AppError("NOT_FOUND", "Ticket not found");
   return db.transaction(async (tx) => {
     const [ticket] = await tx
-      .select({ status: tickets.status, firstResponseAt: tickets.firstResponseAt })
+      .select({
+        status: tickets.status,
+        firstResponseAt: tickets.firstResponseAt,
+        customerEmail: tickets.customerEmail,
+        externalRef: tickets.externalRef,
+      })
       .from(tickets)
       .where(and(eq(tickets.id, ticketId), eq(tickets.tenantId, tenantId)));
     if (!ticket) throw new AppError("NOT_FOUND", "Ticket not found");
+    const plan = planReplyEmail(ticket, { enabled: emailEnabled });
     const [message] = await tx
       .insert(ticketMessages)
-      .values({ tenantId, ticketId, authorType: "agent", authorId, body })
-      .returning({ id: ticketMessages.id });
+      .values({ tenantId, ticketId, authorType: "agent", authorId, body, ...plan })
+      .returning({ id: ticketMessages.id, emailStatus: ticketMessages.emailStatus });
+    await queueReplyEmail(tx, { tenantId, messageId: message.id, plan });
     await tx
       .update(tickets)
       .set({

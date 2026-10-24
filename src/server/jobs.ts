@@ -5,6 +5,8 @@ import type { AnyDatabase } from "@/db/types";
 import { isAppError } from "@/lib/errors";
 import { logger, type Logger } from "@/lib/logger";
 import { triageTicket, type TriageModel } from "./ai/triage";
+import type { Mailer } from "./email/mailer";
+import { sendReplyEmail } from "./email/send-reply";
 
 /*
  * A small job queue on Postgres. `enqueueJob` takes a transaction, so a job is queued only if the
@@ -15,10 +17,13 @@ import { triageTicket, type TriageModel } from "./ai/triage";
 export const MAX_ATTEMPTS = 3;
 
 const triageTicketPayload = z.object({ ticketId: z.uuid() });
+const sendReplyEmailPayload = z.object({ messageId: z.uuid() });
 
 /** External services a handler may need. Injected so tests can pass mocks. */
 export interface JobServices {
   triageModel: () => TriageModel;
+  /** Outbound email; omitted or null means sending is not configured. */
+  mailer?: () => Mailer | null;
 }
 
 interface JobContext {
@@ -33,6 +38,11 @@ const handlers = {
   triage_ticket: async (payload: unknown, { db, tenantId, log, services }: JobContext) => {
     const { ticketId } = triageTicketPayload.parse(payload);
     await triageTicket(db, services.triageModel(), { tenantId, ticketId, log });
+  },
+  /** Emails one agent reply to the customer (see email/send-reply.ts). */
+  send_reply_email: async (payload: unknown, { db, tenantId, log, services }: JobContext) => {
+    const { messageId } = sendReplyEmailPayload.parse(payload);
+    await sendReplyEmail(db, services.mailer?.() ?? null, { tenantId, messageId, log });
   },
 } satisfies Record<string, (payload: unknown, ctx: JobContext) => Promise<void>>;
 

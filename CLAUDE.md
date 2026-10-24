@@ -69,6 +69,9 @@ request-time API under Cache Components).
 - `src/server/ai/claude.ts`: `callStructured` (structured output, fallbacks, usage). `answer.ts`: `askKnowledgeBase`.
   `drafts.ts`: `generateDraft` (help articles only, holding-reply fallback), `reviewDraft` (the human approval step).
   Tests use `tests/ai/mock-knowledge.ts` (mock embedder, answer and draft models).
+- `src/server/email/`: `mailer.ts` (Resend over fetch, `getMailer()` may be null), `outbound.ts` (`planReplyEmail`:
+  never email demo tickets or reserved domains), `send-reply.ts` (the `send_reply_email` job). Tests use
+  `tests/email/mock-mailer.ts`.
 - `src/server/evals/golden.ts`: schema + parser for `evals/golden_tickets.jsonl`.
 - `seed/`: DEMO DATA pipeline. `lib/plan.ts` decides labels in code, `lib/generate.ts` has Claude write text,
   `lib/load-data.ts` loads tenant "acme". `seed/data/*.json` is generated output; edit the catalog/plan, not the JSON.

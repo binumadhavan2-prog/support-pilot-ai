@@ -1,4 +1,4 @@
-import { ArrowLeft, ShieldAlert, Sparkles } from "lucide-react";
+import { ArrowLeft, Clock, MailCheck, MailMinus, MailX, ShieldAlert, Sparkles } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -130,6 +130,13 @@ async function Content({ params }: Pick<PageProps<"/tickets/[id]">, "params">) {
               </header>
               {/* Plain text only: customer content is never rendered as HTML. */}
               <p className="text-sm whitespace-pre-wrap">{m.body}</p>
+              {m.emailStatus && (
+                <EmailStatusLine
+                  status={m.emailStatus}
+                  detail={m.emailDetail}
+                  sentAt={m.emailSentAt}
+                />
+              )}
             </article>
           ))}
           {canWrite && <ReplyForm ticketId={ticket.id} />}
@@ -225,5 +232,32 @@ async function Content({ params }: Pick<PageProps<"/tickets/[id]">, "params">) {
         </aside>
       </div>
     </>
+  );
+}
+
+const emailStatusView = {
+  queued: { icon: Clock, label: "Queued for email", className: "text-muted-foreground" },
+  sent: { icon: MailCheck, label: "Emailed to customer", className: "text-muted-foreground" },
+  failed: { icon: MailX, label: "Email not delivered", className: "text-destructive" },
+  skipped: { icon: MailMinus, label: "Not emailed", className: "text-muted-foreground" },
+} as const;
+
+function EmailStatusLine({
+  status,
+  detail,
+  sentAt,
+}: {
+  status: keyof typeof emailStatusView;
+  detail: string | null;
+  sentAt: Date | null;
+}) {
+  const { icon: Icon, label, className } = emailStatusView[status];
+  return (
+    <p className={cn("mt-3 flex items-center gap-1.5 text-xs", className)}>
+      <Icon className="size-3.5" aria-hidden />
+      {label}
+      {sentAt && ` · ${formatDateTime(sentAt)}`}
+      {detail && ` · ${detail}`}
+    </p>
   );
 }

@@ -12,6 +12,7 @@ import {
 import { user } from "./auth";
 import { customerAccounts } from "./customers";
 import {
+  emailStatus,
   messageAuthorType,
   supportTeam,
   ticketCategory,
@@ -108,6 +109,12 @@ export const ticketMessages = pgTable(
     // Set when the message was sent from an approved AI draft (traceability for analytics).
     // Plain uuid (no FK) to avoid a circular reference with ai_drafts; enforced in the service layer.
     sourceDraftId: uuid("source_draft_id"),
+    // Outbound email for agent replies; null for customer and system messages.
+    emailStatus: emailStatus("email_status"),
+    // Safe, human-readable reason for skipped or failed delivery. Never provider error text.
+    emailDetail: text("email_detail"),
+    emailProviderId: text("email_provider_id"),
+    emailSentAt: timestamp("email_sent_at", { withTimezone: true }),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (t) => [

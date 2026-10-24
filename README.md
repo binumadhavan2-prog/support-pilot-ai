@@ -144,8 +144,26 @@ On a ticket, an agent clicks **Draft a reply** (`draft:generate`). `src/server/a
 "Best regards,", saves `final_body` with status `approved` or `edited`, adds the reply to the
 conversation as the agent's message (linked to the draft), sets the first-response time, moves an
 open ticket to `pending`, and writes `draft.approved` / `draft.edited_and_approved` to the audit
-log, all in one transaction. A draft can be reviewed only once. **There is no outbound email yet**:
-"approved" means added to the conversation. `/approvals` lists all pending drafts.
+log, all in one transaction. A draft can be reviewed only once, and the approved reply is emailed
+like a typed one (see [Outbound email](#outbound-email)). `/approvals` lists all pending drafts.
+
+## Outbound email
+
+Agent replies, typed or approved from an AI draft, are emailed to the customer through
+[Resend](https://resend.com) when `RESEND_API_KEY` and `EMAIL_FROM` are set:
+
+- The reply's transaction marks the message `queued` and adds a `send_reply_email` job, so an email
+  is queued only if the reply is saved. The worker sends it as plain text with the subject
+  `Re: <subject> [#1042]`, then marks it `sent` and writes `ticket.reply_emailed` to the audit log.
+- Failures are marked `failed` and retried with backoff (3 attempts). The message id is the
+  provider's idempotency key, so a retry never sends the same reply twice.
+- Never emailed (`skipped`, with the reason shown): demo or imported tickets (`external_ref`
+  set), reserved test domains (`.example`, `.test`, `example.com` and others), and every reply
+  while no key is set.
+- Each agent message on the ticket page shows its delivery status.
+
+Customer replies to that email are not threaded yet: they arrive through the inbound email
+endpoint as new tickets.
 
 ## AI triage
 
@@ -303,6 +321,8 @@ with a clear message if any are invalid. Error messages name the variable but ne
 | `SEMANTIC_SEARCH`    | No         | `off` = keyword search only, no local model (saves memory)   |
 | `MODEL_CACHE_DIR`    | No         | Absolute path for the embedding model (default `.cache/`)    |
 | `DEMO_USER_PASSWORD` | No         | Demo accounts' password; enables "Try as Guest"              |
+| `RESEND_API_KEY`     | No         | Emails agent replies to customers (needs `EMAIL_FROM`)       |
+| `EMAIL_FROM`         | With key   | Sender, e.g. `Acme Support <support@acme.com>`               |
 
 Embeddings need no key: the model (~130 MB) downloads from Hugging Face on first use into
 `.cache/transformers` (git-ignored). Downloads retry, because the CDN can be slow to connect.
@@ -445,7 +465,8 @@ Docker instead. The build needs no secrets, startup validates the environment, a
 - Analytics days are UTC days (there is no per-tenant time zone yet), and the LLM-judge answer
   evaluation from Phase 6 is not built. Charts use the validated dataviz reference palette
   (`--viz-*` tokens in `globals.css`); every mark carries a visible value label.
-- No outbound email: an approved reply is added to the conversation but not sent to the customer.
+- Reply emails are not threaded: a customer's answer arrives as a new ticket. Outbound email is
+  tested with a mock mailer only; no real Resend account has been used yet.
 - Draft replies are tested with a mock model only (no API key yet); their real quality is
   unmeasured.
 - Knowledge-base answers are tested with a mock model only (no API key yet); their real quality
@@ -493,7 +514,7 @@ Docker instead. The build needs no secrets, startup validates the environment, a
    answers + fallback, search-only mode without a key; PDF / Word upload still to do
 5. AI copilot: ✅ triage (PII redaction, structured classification, routing, injection flag,
    token and latency tracking, golden-set eval script; eval not yet run), ✅ cited draft
-   replies with approve / edit / reject and an approvals queue; outbound email still to do
+   replies with approve / edit / reject and an approvals queue, ✅ outbound reply email (Resend)
 6. Analytics & evals: ✅ dashboard (ticket volume, created vs resolved per day, median first
    response and resolution times, status / priority / category, draft approval and edit
    rates, triage and knowledge-base usage, tokens, workload), ✅ triage golden-set eval script;

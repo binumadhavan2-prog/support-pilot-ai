@@ -61,6 +61,13 @@ describe("parseEnv", () => {
     expect(() => parseEnv({ ...valid, MODEL_CACHE_DIR: "cache" })).toThrow(/MODEL_CACHE_DIR/);
   });
 
+  it("requires EMAIL_FROM when RESEND_API_KEY is set", () => {
+    expect(() => parseEnv({ ...valid, RESEND_API_KEY: "re_key" })).toThrow(/EMAIL_FROM/);
+    expect(
+      parseEnv({ ...valid, RESEND_API_KEY: "re_key", EMAIL_FROM: "help@acme.io" }).EMAIL_FROM,
+    ).toBe("help@acme.io");
+  });
+
   it("rejects an invalid LOG_LEVEL", () => {
     expect(() => parseEnv({ ...valid, LOG_LEVEL: "verbose" })).toThrow(/LOG_LEVEL/);
   });

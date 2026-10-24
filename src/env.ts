@@ -52,6 +52,10 @@ const envSchema = z.object({
   // Password of the seeded demo accounts. When set, the login page offers "Try as Guest", which
   // signs in as the read-only demo viewer. Leave unset on any deployment with real users.
   DEMO_USER_PASSWORD: optionalString,
+  // Outbound email through Resend. Without a key, agent replies are recorded but not emailed.
+  RESEND_API_KEY: optionalString,
+  // Sender of reply emails, e.g. "Acme Support <support@acme.com>". Required with RESEND_API_KEY.
+  EMAIL_FROM: optionalString,
 });
 
 const refinedEnvSchema = envSchema
@@ -61,6 +65,13 @@ const refinedEnvSchema = envSchema
         code: "custom",
         path: ["BETTER_AUTH_URL"],
         message: "BETTER_AUTH_URL is required in production (the app's public base URL)",
+      });
+    }
+    if (env.RESEND_API_KEY && !env.EMAIL_FROM) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["EMAIL_FROM"],
+        message: "EMAIL_FROM is required when RESEND_API_KEY is set",
       });
     }
   })

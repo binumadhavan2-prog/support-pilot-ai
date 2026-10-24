@@ -61,6 +61,8 @@ that has already been applied.
 | `MODEL_CACHE_DIR`    | `/tmp/transformers`                                                         |
 | `ANTHROPIC_API_KEY`  | Optional. Turns on cited answers and draft replies                          |
 | `DEMO_USER_PASSWORD` | Optional, demo deployments only. Shows "Try as Guest"                       |
+| `RESEND_API_KEY`     | Optional. Emails agent replies to customers (sent by the worker)            |
+| `EMAIL_FROM`         | Required with `RESEND_API_KEY`, on a domain verified in Resend              |
 
 3. Deploy, then open `https://<your-domain>/api/health`. It should return
    `{"status":"ok","checks":{"database":"up"}}`. A 503 means the app cannot reach the database:
@@ -102,8 +104,8 @@ docker build --target tools -t support-pilot-ai-tools .
 ```
 
 Give it `DATABASE_URL` (the pooled string is fine; the worker uses one connection),
-`BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`, `NODE_ENV=production` (already set in the image) and
-`ANTHROPIC_API_KEY`. The image's default command is the worker. It stops cleanly on SIGTERM,
+`BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`, `NODE_ENV=production` (already set in the image),
+`ANTHROPIC_API_KEY`, and `RESEND_API_KEY` + `EMAIL_FROM` to send reply emails. The image's default command is the worker. It stops cleanly on SIGTERM,
 finishing the job in progress.
 
 Without a worker, the app still works: tickets just stay untriaged (no AI summary, suggested
@@ -128,7 +130,8 @@ binaries are included.
 
 - **Sign-in rate limit:** Better Auth's limiter is in memory, so on Vercel each instance counts
   separately. The ticket API's limiter is in Postgres and is unaffected.
-- **No outbound email:** approved replies are saved but not sent (see the README).
+- **Reply emails need the worker:** replies are queued in Postgres and sent by the worker, so
+  without one they stay "Queued for email".
 - **Cold starts:** Neon's free tier suspends idle databases and Vercel scales functions to zero.
   The first request after a quiet period is slower.
 - **Function limits:** model calls and embedding run inside requests. Check your Vercel plan's
