@@ -210,7 +210,8 @@ async function Content({ params }: Pick<PageProps<"/tickets/[id]">, "params">) {
               <CardTitle>Draft reply</CardTitle>
               <CardDescription>
                 AI drafts a reply from your help articles. Nothing is added to the conversation
-                until an agent approves it. Email sending is not built yet.
+                until an agent approves it. Approved replies are emailed to the customer when email
+                is set up.
               </CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col gap-4">

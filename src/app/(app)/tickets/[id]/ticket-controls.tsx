@@ -137,7 +137,7 @@ export function ReplyForm({ ticketId }: { ticketId: string }) {
       )}
       <div className="flex items-center justify-between gap-2">
         <p className="text-xs text-muted-foreground">
-          Added to the conversation. Email sending is not built yet.
+          Added to the conversation, and emailed to the customer when email is set up.
         </p>
         <Button type="submit" disabled={pending}>
           {pending ? "Adding…" : "Add reply"}
