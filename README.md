@@ -249,8 +249,8 @@ untriaged. `seed/data` is written by Claude via `npm run seed:generate` (needs
 `ANTHROPIC_API_KEY`, roughly $1–3). Every file carries a demo notice. See `seed/` and
 `evals/README.md`.
 
-**Local dev database (no account):** `C:\Users\layan\support-pilot-devdb` (outside this repo)
-runs PGlite with pgvector over the Postgres protocol on `127.0.0.1:54322`. Point the app at it with
+**Local dev database (no account):** a small companion project, `support-pilot-devdb` (kept
+next to this repo, not in it), runs PGlite with pgvector over the Postgres protocol on `127.0.0.1:54322`. Point the app at it with
 `DATABASE_URL=postgres://postgres:postgres@127.0.0.1:54322/postgres` and `DATABASE_POOL_MAX=1`.
 
 - `npm start` / `npm run stop` there. **Always stop it with `npm run stop` (or Ctrl+C)**, never
