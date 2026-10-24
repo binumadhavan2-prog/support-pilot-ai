@@ -7,7 +7,7 @@ import { can, type Permission, type Role } from "@/server/auth/permissions";
 export const NAV_ITEMS = [
   { href: "/inbox", label: "Inbox", icon: "inbox", permission: "ticket:read" },
   { href: "/approvals", label: "Approvals", icon: "approvals", permission: "draft:review" },
-  { href: "/incidents", label: "Incidents", icon: "incidents", permission: "ticket:read" },
+  { href: "/incidents", label: "Incidents", icon: "incidents", permission: "incident:read" },
   { href: "/analytics", label: "Analytics", icon: "analytics", permission: "analytics:read" },
   { href: "/knowledge", label: "Knowledge Base", icon: "knowledge", permission: "document:read" },
   { href: "/settings", label: "Settings", icon: "settings", permission: null },

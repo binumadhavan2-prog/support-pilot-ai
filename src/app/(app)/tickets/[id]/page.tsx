@@ -149,6 +149,18 @@ async function Content({ params }: Pick<PageProps<"/tickets/[id]">, "params">) {
           <Card>
             <CardHeader>
               <CardTitle>Ticket</CardTitle>
+              {ticket.incident && (
+                <CardDescription>
+                  Part of incident{" "}
+                  <Link
+                    href={`/incidents/${ticket.incident.id}`}
+                    className="font-medium text-foreground hover:underline"
+                  >
+                    {ticket.incident.title}
+                  </Link>{" "}
+                  ({humanize(ticket.incident.status)})
+                </CardDescription>
+              )}
             </CardHeader>
             <CardContent>
               {canWrite ? (

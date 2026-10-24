@@ -67,6 +67,22 @@ export function PriorityBadge({ priority }: { priority: keyof typeof priorityVar
   );
 }
 
+const severityVariant = {
+  sev1: "destructive",
+  sev2: "default",
+  sev3: "secondary",
+  sev4: "outline",
+} as const;
+
+/** Incident severity, SEV1 (most severe) to SEV4. */
+export function SeverityBadge({ severity }: { severity: keyof typeof severityVariant }) {
+  return (
+    <Badge variant={severityVariant[severity]} title={`Severity: ${severity}`}>
+      {severity.toUpperCase()}
+    </Badge>
+  );
+}
+
 /** Marks text and labels produced by a model, so they are never mistaken for an agent's work. */
 export function AiBadge() {
   return (

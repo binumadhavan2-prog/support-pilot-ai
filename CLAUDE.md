@@ -54,6 +54,7 @@ request-time API under Cache Components).
 - `src/db/schema/tenancy.ts`: `tenants`, the `tenantId()` column and the same-tenant FK helpers.
 - `src/db/types.ts`: `AnyDatabase`. Services take it (not `getDb()` directly) so tests can pass PGlite.
 - `src/server/tenants.ts`: `ensureTenant`, `listTenantUsers`, `assertUserInTenant`.
+- `src/server/incidents.ts`: list / get / create / update incidents, link tickets by number (`incident:manage`).
 - `src/server/tickets.ts`: create (ticket + message + audit + triage job in one transaction), list, get.
   `src/server/api-keys.ts` + `src/server/auth/api-auth.ts`: Bearer API keys, `requireApiPermission` for `/api/tickets/**`.
 - `src/server/jobs.ts`: Postgres job queue (`enqueueJob` inside the caller's transaction, `processNextJob`

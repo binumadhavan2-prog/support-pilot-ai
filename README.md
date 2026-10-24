@@ -4,11 +4,11 @@
 drafts replies grounded in your own documents, with source citations, and a human approves every
 reply before it is sent.
 
-> **Status: Phases 1-4 done, Phases 5-6 mostly done.** Sign-in, roles, multi-tenancy, tickets
-> (API and email intake, inbox, status, assignment, replies), the knowledge base with cited
-> answers, AI triage, AI draft replies with human approval and the analytics dashboard all
-> work. The AI features need `ANTHROPIC_API_KEY`. Incidents shows a labeled "Not built yet"
-> panel with no sample data. See [Roadmap](#roadmap).
+> **Status: Phases 1-4 and 7 done, Phases 5-6 mostly done.** Sign-in, roles, multi-tenancy,
+> tickets (API and email intake, inbox, status, assignment, replies emailed through Resend),
+> incidents, the knowledge base with cited answers, AI triage, AI draft replies with human
+> approval and the analytics dashboard all work. The AI features need `ANTHROPIC_API_KEY`. See
+> [Roadmap](#roadmap).
 
 ## Architecture
 
@@ -82,14 +82,14 @@ Sign-ins and admin actions are written to `audit_logs`.
 
 Signed-in pages share a collapsible sidebar (shadcn/ui `Sidebar`; a slide-over sheet on phones).
 
-| Section        | Route        | Needs            | Status                                                     |
-| -------------- | ------------ | ---------------- | ---------------------------------------------------------- |
-| Inbox          | `/inbox`     | `ticket:read`    | Ticket list with filters, search and pages; `/tickets/:id` |
-| Approvals      | `/approvals` | `draft:review`   | Queue of AI drafts waiting for review, oldest first        |
-| Incidents      | `/incidents` | `ticket:read`    | Not built yet (planned)                                    |
-| Analytics      | `/analytics` | `analytics:read` | Volume, response times, breakdowns, AI usage, workload     |
-| Knowledge Base | `/knowledge` | `document:read`  | Ask with cited answers; admins upload / delete documents   |
-| Settings       | `/settings`  | signed in        | Account and permissions; admins also get `/settings/users` |
+| Section        | Route        | Needs            | Status                                                        |
+| -------------- | ------------ | ---------------- | ------------------------------------------------------------- |
+| Inbox          | `/inbox`     | `ticket:read`    | Ticket list with filters, search and pages; `/tickets/:id`    |
+| Approvals      | `/approvals` | `draft:review`   | Queue of AI drafts waiting for review, oldest first           |
+| Incidents      | `/incidents` | `incident:read`  | Outages with linked tickets, alert and logs; `/incidents/:id` |
+| Analytics      | `/analytics` | `analytics:read` | Volume, response times, breakdowns, AI usage, workload        |
+| Knowledge Base | `/knowledge` | `document:read`  | Ask with cited answers; admins upload / delete documents      |
+| Settings       | `/settings`  | signed in        | Account and permissions; admins also get `/settings/users`    |
 
 Items a role cannot use are hidden from the sidebar (viewers do not see Approvals), and each page
 checks the same permission on the server. Dark mode follows the OS setting; there is no toggle yet.
@@ -380,10 +380,11 @@ Embeddings need no key: the model (~130 MB) downloads from Hugging Face on first
 - **API and AI integration:** the real route handlers with real Better Auth sessions (tickets,
   email intake, PATCH, idempotency, size limits, rate limits, tenant isolation), triage, the
   knowledge base, draft replies and analytics, all on PGlite with MOCK models and embedder.
-- **E2E (Playwright, `npm run test:e2e`):** 11 browser tests against the running app, using the
+- **E2E (Playwright, `npm run test:e2e`):** 13 browser tests against the running app, using the
   installed Microsoft Edge (no browser download). Sign-in (form, wrong password, Try as Guest,
   redirects), role restrictions, security headers, an agent's ticket workflow (search, assign
-  to me, reply, resolve, the "Mine" filter), the knowledge base (upload, duplicate rejected,
+  to me, reply, resolve, the "Mine" filter), incidents (create, link a ticket, resolve; viewers
+  can't edit), the knowledge base (upload, duplicate rejected,
   English and Hinglish search, delete; viewers can't upload) and analytics (tiles, chart hover,
   table view, range switch). Start the app first (`npm run build && npm run start`, demo
   accounts seeded). Tests run one at a time, reuse saved sessions (the app allows 5 sign-ins
@@ -460,8 +461,8 @@ Docker instead. The build needs no secrets, startup validates the environment, a
 - RLS policies are not used for tenant isolation (the app connects as the table owner). Isolation
   relies on service-layer filtering plus composite foreign keys.
 
-- Incidents is a labeled placeholder. There are no internal notes, ticket merging or SLA timers
-  yet.
+- Incidents are created and linked by hand; there is no AI incident summary or automatic
+  grouping yet. There are no internal notes, ticket merging or SLA timers either.
 - Analytics days are UTC days (there is no per-tenant time zone yet), and the LLM-judge answer
   evaluation from Phase 6 is not built. Charts use the validated dataviz reference palette
   (`--viz-*` tokens in `globals.css`); every mark carries a visible value label.
@@ -490,7 +491,6 @@ Docker instead. The build needs no secrets, startup validates the environment, a
   Postgres.
 - Inbox search uses `ILIKE` substring matching (wildcards escaped), which scans the tenant's rows.
   Fine at demo scale; larger tenants would want the full-text index in Phase 4's search work.
-- Incidents is in the navigation but not yet scheduled in the roadmap.
 - No password reset or email verification: there is no email provider yet. Admins set initial
   passwords.
 - The sign-in rate limiter is in memory, so it is per instance and resets on restart. Multiple
@@ -522,3 +522,5 @@ Docker instead. The build needs no secrets, startup validates the environment, a
 7. Hardening: ✅ API rate limiting, ✅ idempotent webhooks, ✅ security headers, ✅ request size
    limits, ✅ Playwright E2E, ✅ Docker (standalone image, Compose
    stack, CI smoke test), ✅ Vercel + Supabase/Neon guide
+8. Incidents: ✅ create, status and severity, link tickets by number, alert and log evidence;
+   AI incident summary still to do (needs a Claude key)

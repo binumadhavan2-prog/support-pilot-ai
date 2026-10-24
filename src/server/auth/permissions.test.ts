@@ -6,6 +6,8 @@ describe("can", () => {
   const expected: Record<Permission, Record<(typeof ROLES)[number], boolean>> = {
     "ticket:read": { admin: true, agent: true, viewer: true },
     "ticket:write": { admin: true, agent: true, viewer: false },
+    "incident:read": { admin: true, agent: true, viewer: true },
+    "incident:manage": { admin: true, agent: true, viewer: false },
     "draft:generate": { admin: true, agent: true, viewer: false },
     "draft:review": { admin: true, agent: true, viewer: false },
     "kb:ask": { admin: true, agent: true, viewer: true },

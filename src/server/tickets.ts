@@ -1,6 +1,6 @@
 import { and, asc, count, desc, eq, ilike, inArray, isNull, or, type SQL } from "drizzle-orm";
 import { z } from "zod";
-import { ticketMessages, tickets, triageResults, user } from "@/db/schema";
+import { incidents, ticketMessages, tickets, triageResults, user } from "@/db/schema";
 import { ticketCategory, ticketPriority, ticketStatus } from "@/db/schema/enums";
 import type { AnyDatabase } from "@/db/types";
 import { AppError } from "@/lib/errors";
@@ -262,8 +262,21 @@ export async function getTicket(db: AnyDatabase, tenantId: string, ticketId: str
     .orderBy(desc(triageResults.createdAt))
     .limit(1);
 
+  const [incident] = ticket.incidentId
+    ? await db
+        .select({ id: incidents.id, title: incidents.title, status: incidents.status })
+        .from(incidents)
+        .where(and(eq(incidents.id, ticket.incidentId), eq(incidents.tenantId, tenantId)))
+    : [];
+
   const { externalRef, ...rest } = ticket;
-  return { ...rest, isDemo: externalRef !== null, messages, triage: triage ?? null };
+  return {
+    ...rest,
+    isDemo: externalRef !== null,
+    messages,
+    triage: triage ?? null,
+    incident: incident ?? null,
+  };
 }
 
 /** Agents and admins of the tenant who can own tickets (banned users excluded). */

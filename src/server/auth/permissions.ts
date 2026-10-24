@@ -8,6 +8,8 @@ export type Role = (typeof ROLES)[number];
 export const PERMISSIONS = {
   "ticket:read": ["admin", "agent", "viewer"],
   "ticket:write": ["admin", "agent"],
+  "incident:read": ["admin", "agent", "viewer"],
+  "incident:manage": ["admin", "agent"],
   "draft:generate": ["admin", "agent"],
   "draft:review": ["admin", "agent"],
   "kb:ask": ["admin", "agent", "viewer"],
