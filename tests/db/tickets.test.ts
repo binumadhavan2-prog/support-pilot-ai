@@ -2,7 +2,7 @@ import { eq } from "drizzle-orm";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { apiKeys, auditLogs, jobs, ticketMessages, tickets, tenants } from "@/db/schema";
 import { createApiKey, revokeApiKey, verifyApiKey } from "@/server/api-keys";
-import { MAX_ATTEMPTS, enqueueJob, processNextJob } from "@/server/jobs";
+import { MAX_ATTEMPTS, STALE_JOB_MINUTES, enqueueJob, processNextJob } from "@/server/jobs";
 import {
   createTicket,
   getTicket,
@@ -188,6 +188,45 @@ describe("API keys", () => {
 describe("job queue", () => {
   // MOCK model: no network calls in tests.
   const services = { triageModel: () => mockTriageModel() };
+
+  it("reclaims a job left running by a stopped worker, but not a recent one", async () => {
+    while (await processNextJob(db, services));
+    const created = await createTicket(db, tenantA, input(), { actor: apiActor, source: "api" });
+    const [job] = await db
+      .select()
+      .from(jobs)
+      .where(eq(jobs.payload, { ticketId: created.id }));
+    // A worker claimed it a minute ago and is still on it: leave it alone.
+    await db
+      .update(jobs)
+      .set({ status: "running", attempts: 1, updatedAt: new Date(Date.now() - 60_000) })
+      .where(eq(jobs.id, job.id));
+    expect(await processNextJob(db, services)).toBeNull();
+
+    // Its worker died long ago: claim it again and finish it.
+    await db
+      .update(jobs)
+      .set({ updatedAt: new Date(Date.now() - (STALE_JOB_MINUTES + 1) * 60_000) })
+      .where(eq(jobs.id, job.id));
+    expect(await processNextJob(db, services)).toEqual({ id: job.id, status: "succeeded" });
+    const [after] = await db.select().from(jobs).where(eq(jobs.id, job.id));
+    expect(after.attempts).toBe(2);
+  });
+
+  it("fails a job that stalled on its last attempt instead of running it again", async () => {
+    const { id } = await enqueueJob(db, {
+      tenantId: tenantA,
+      type: "triage_ticket",
+      payload: { ticketId: "00000000-0000-4000-8000-0000000000aa" },
+    });
+    await db
+      .update(jobs)
+      .set({ status: "running", attempts: MAX_ATTEMPTS, updatedAt: new Date(0) })
+      .where(eq(jobs.id, id));
+    expect(await processNextJob(db, services)).toBeNull();
+    const [job] = await db.select().from(jobs).where(eq(jobs.id, id));
+    expect(job).toMatchObject({ status: "failed", lastError: "The worker stopped during the job" });
+  });
 
   it("runs triage (with a mock model) and marks the job succeeded", async () => {
     // Drain jobs queued by earlier tests first.

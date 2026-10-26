@@ -1,4 +1,4 @@
-import { and, asc, eq, lte, sql } from "drizzle-orm";
+import { and, asc, eq, lt, lte, or, sql } from "drizzle-orm";
 import { z } from "zod";
 import { jobs } from "@/db/schema";
 import type { AnyDatabase } from "@/db/types";
@@ -66,6 +66,12 @@ function isJobType(type: string): type is JobType {
 }
 
 /**
+ * A job still "running" after this long lost its worker (crash, deploy, killed process) or its
+ * result could not be saved, so it is claimed again. Longer than any handler should take.
+ */
+export const STALE_JOB_MINUTES = 10;
+
+/**
  * Runs at most one due job. Returns its id and final status, or null when the queue is empty.
  * A failed job is retried (with a delay) until MAX_ATTEMPTS, then left as `failed`.
  */
@@ -74,11 +80,28 @@ export async function processNextJob(db: AnyDatabase, services: JobServices, log
     const [next] = await tx
       .select()
       .from(jobs)
-      .where(and(eq(jobs.status, "queued"), lte(jobs.runAfter, sql`now()`)))
+      .where(
+        or(
+          and(eq(jobs.status, "queued"), lte(jobs.runAfter, sql`now()`)),
+          and(
+            eq(jobs.status, "running"),
+            lt(jobs.updatedAt, sql`now() - make_interval(mins => ${STALE_JOB_MINUTES})`),
+          ),
+        ),
+      )
       .orderBy(asc(jobs.runAfter))
       .limit(1)
       .for("update", { skipLocked: true });
     if (!next) return null;
+    if (next.status === "running" && next.attempts >= MAX_ATTEMPTS) {
+      // Stalled on its last attempt: give up rather than run it a fourth time.
+      await tx
+        .update(jobs)
+        .set({ status: "failed", lastError: "The worker stopped during the job" })
+        .where(eq(jobs.id, next.id));
+      log.warn({ jobId: next.id, jobType: next.type }, "stale job marked failed");
+      return null;
+    }
     const [claimed] = await tx
       .update(jobs)
       .set({ status: "running", attempts: next.attempts + 1 })
