@@ -21,9 +21,9 @@ jobs:
       # Builds must not need runtime secrets; none are provided here on purpose.
       NEXT_TELEMETRY_DISABLED: "1"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: npm
@@ -65,7 +65,7 @@ jobs:
       # Throwaway values for the smoke test only.
       BETTER_AUTH_SECRET: ci-only-secret-not-used-anywhere-else-0123456789
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Build and start the stack
         # --wait blocks until the app's HEALTHCHECK (/api/health, database included) passes.
