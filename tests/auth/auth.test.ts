@@ -312,6 +312,12 @@ describe("sign-in rate limit (production)", () => {
     );
 
   it("allows 5 attempts a minute per IP, counted in Postgres across instances", async () => {
+    // Windows are aligned to clock minutes; start in a fresh one so the attempts can't straddle
+    // a boundary (which would reset the count) on a slow machine.
+    const msIntoMinute = Date.now() % 60_000;
+    if (msIntoMinute > 40_000) {
+      await new Promise((resolve) => setTimeout(resolve, 60_000 - msIntoMinute + 100));
+    }
     const first = productionAuth();
     for (let i = 0; i < 5; i++) {
       expect((await attempt(first, "203.0.113.7")).status).toBe(401);
@@ -325,5 +331,5 @@ describe("sign-in rate limit (production)", () => {
     expect((await attempt(first, "198.51.100.4")).status).toBe(401);
     const counters = await db.select().from(rateLimits);
     expect(counters.some((c) => c.key.startsWith("auth:"))).toBe(true);
-  });
+  }, 60_000);
 });

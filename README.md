@@ -92,7 +92,8 @@ Signed-in pages share a collapsible sidebar (shadcn/ui `Sidebar`; a slide-over s
 | Settings       | `/settings`  | signed in        | Account and permissions; admins also get `/settings/users`    |
 
 Items a role cannot use are hidden from the sidebar (viewers do not see Approvals), and each page
-checks the same permission on the server. Dark mode follows the OS setting; there is no toggle yet.
+checks the same permission on the server. Dark mode follows the OS setting until
+someone picks Light or Dark with the header toggle (saved per browser).
 
 The ticket page shows the conversation on the left and an "AI Copilot" panel on the right with the
 AI triage (summary, suggested team, confidence, reasoning; marked **AI**) and the draft reply (see
@@ -387,13 +388,13 @@ Embeddings need no key: the model (~130 MB) downloads from Hugging Face on first
 - **API and AI integration:** the real route handlers with real Better Auth sessions (tickets,
   email intake, PATCH, idempotency, size limits, rate limits, tenant isolation), triage, the
   knowledge base, draft replies and analytics, all on PGlite with MOCK models and embedder.
-- **E2E (Playwright, `npm run test:e2e`):** 15 browser tests against the running app, using the
+- **E2E (Playwright, `npm run test:e2e`):** 16 browser tests against the running app, using the
   installed Microsoft Edge (no browser download). Sign-in (form, wrong password, Try as Guest,
   redirects), role restrictions, security headers, an agent's ticket workflow (search, assign
   to me, reply, resolve, the "Mine" filter), incidents (create, link a ticket, resolve; viewers
   can't edit), the knowledge base (upload, duplicate rejected,
   English and Hinglish search, delete, PDF and Word uploads; viewers can't upload) and analytics (tiles, chart hover,
-  table view, range switch). Start the app first (`npm run build && npm run start`, demo
+  table view, range switch) and the theme toggle. Start the app first (`npm run build && npm run start`, demo
   accounts seeded). Tests run one at a time, reuse saved sessions (the app allows 5 sign-ins
   per minute), and label everything they create "[E2E]"; created tickets stay in the database.
 
