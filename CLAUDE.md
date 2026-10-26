@@ -37,7 +37,8 @@ request-time API under Cache Components).
 - `src/app`: routes. Route handlers live in `src/app/api/**/route.ts`.
 - `src/env.ts`: the only place that reads `process.env` (except `logger.ts`, `instrumentation.ts`, `drizzle.config.ts`,
   and `next.config.ts` for `NODE_ENV` only).
-- `src/server/rate-limit.ts`: Postgres fixed-window limiter, applied in `requireApiPermission`. Ticket creation takes an
+- `src/server/rate-limit.ts`: Postgres fixed-window limiter, applied in `requireApiPermission` and used as Better
+  Auth's rate-limit storage (`authRateLimitStorage`). Ticket creation takes an
   `idempotencyKey` (`src/app/api/tickets/idempotency.ts`). Security headers live in `next.config.ts`.
 - `src/db/schema/*`: Drizzle tables, one file per domain. `src/db/client.ts` has the lazy `getDb()`.
 - `src/lib/errors.ts`: `AppError` + codes. `src/lib/api/handler.ts`: `withApiHandler`, `parseJsonBody`.

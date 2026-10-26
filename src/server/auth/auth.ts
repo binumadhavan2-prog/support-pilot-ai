@@ -8,7 +8,9 @@ import { createAccessControl } from "better-auth/plugins/access";
 import { adminAc, defaultStatements } from "better-auth/plugins/admin/access";
 import { getDb } from "@/db/client";
 import * as schema from "@/db/schema";
+import type { AnyDatabase } from "@/db/types";
 import { getEnv } from "@/env";
+import { authRateLimitStorage } from "../rate-limit";
 
 import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from "./constants";
 
@@ -26,7 +28,7 @@ const authRoles = {
 
 interface CreateAuthOptions {
   // Any Drizzle Postgres database (postgres-js in the app, PGlite in tests).
-  db: Parameters<typeof drizzleAdapter>[0];
+  db: AnyDatabase;
   secret: string;
   baseURL: string;
   production: boolean;
@@ -65,8 +67,9 @@ export function createAuth({
       updateAge: 60 * 60 * 24, // refresh expiry at most once a day
     },
     rateLimit: {
-      // In-memory limiter: fine for one instance, see README "Known limitations".
       enabled: production,
+      // Counted in Postgres (rate_limits), so limits survive restarts and hold across instances.
+      customStorage: authRateLimitStorage(db),
       window: 60,
       max: 100,
       customRules: { "/sign-in/email": { window: 60, max: 5 } },

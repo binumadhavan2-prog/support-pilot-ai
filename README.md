@@ -352,7 +352,8 @@ Embeddings need no key: the model (~130 MB) downloads from Hugging Face on first
   The length rule is also enforced on the admin create-user endpoint, which Better Auth leaves
   unchecked (found by a test).
 - Sign-in failures always return the same message whether the email exists or not. Sign-in is
-  limited to 5 attempts per minute per IP in production.
+  limited to 5 attempts per minute per IP in production, counted in Postgres (`rate_limits`,
+  shared with the API limiter), so the limit holds across restarts and instances.
 - Session cookies are `HttpOnly` and `SameSite=Lax`, and `Secure` in production. Better Auth rejects
   cross-origin auth requests.
 - `?next=` redirects after sign-in accept only same-origin paths, which prevents open redirects.
@@ -493,14 +494,10 @@ Docker instead. The build needs no secrets, startup validates the environment, a
 - The content security policy allows inline scripts (`'unsafe-inline'`), which Next.js needs
   without per-request nonces; nonces would make every page dynamic. Everything else is
   same-origin only.
-- The Better Auth sign-in limiter is still in memory (per instance); the API limiter is in
-  Postgres.
 - Inbox search uses `ILIKE` substring matching (wildcards escaped), which scans the tenant's rows.
   Fine at demo scale; larger tenants would want the full-text index in Phase 4's search work.
-- No password reset or email verification: there is no email provider yet. Admins set initial
-  passwords.
-- The sign-in rate limiter is in memory, so it is per instance and resets on restart. Multiple
-  instances would need a shared store (database or Redis).
+- No password reset or email verification yet (Resend could send them, but the flows are not
+  built). Admins set initial passwords.
 - Integration tests use PGlite (Postgres compiled to WASM). It runs real Postgres SQL and pgvector,
   but there has been no test run against a hosted Postgres yet.
 - `npm audit` reports 5 high-severity advisories in `braces`, pulled in only by dev tooling

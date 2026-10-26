@@ -128,8 +128,6 @@ binaries are included.
 
 ## Known limits of this setup
 
-- **Sign-in rate limit:** Better Auth's limiter is in memory, so on Vercel each instance counts
-  separately. The ticket API's limiter is in Postgres and is unaffected.
 - **Reply emails need the worker:** replies are queued in Postgres and sent by the worker, so
   without one they stay "Queued for email".
 - **Cold starts:** Neon's free tier suspends idle databases and Vercel scales functions to zero.
@@ -139,13 +137,12 @@ binaries are included.
 
 ## Which option to pick
 
-|                    | Vercel + Supabase/Neon                    | Docker on a container host     |
-| ------------------ | ----------------------------------------- | ------------------------------ |
-| Setup              | Least ops for the web app                 | One image and one Compose file |
-| Worker             | Needs a separate host anyway              | Runs next to the app           |
-| Embedding model    | Downloaded per instance (cold-start cost) | Kept on a volume               |
-| Sign-in rate limit | Per instance                              | One instance, so it's exact    |
-| Previews per PR    | Built in                                  | Not included                   |
+|                 | Vercel + Supabase/Neon                    | Docker on a container host     |
+| --------------- | ----------------------------------------- | ------------------------------ |
+| Setup           | Least ops for the web app                 | One image and one Compose file |
+| Worker          | Needs a separate host anyway              | Runs next to the app           |
+| Embedding model | Downloaded per instance (cold-start cost) | Kept on a volume               |
+| Previews per PR | Built in                                  | Not included                   |
 
 For a portfolio demo, Vercel + Supabase/Neon with `SEMANTIC_SEARCH=off` and no worker is the
 cheapest way to show the UI. Running every feature (triage, semantic search) is simpler with the

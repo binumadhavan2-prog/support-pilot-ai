@@ -1,7 +1,7 @@
 import { isAPIError } from "better-auth/api";
 import { eq } from "drizzle-orm";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { account, tenants, user } from "@/db/schema";
+import { account, rateLimits, tenants, user } from "@/db/schema";
 import { createAuth, type Auth } from "@/server/auth/auth";
 import { createTestDb, type TestDb } from "../db/test-db";
 
@@ -284,5 +284,46 @@ describe("admin endpoints", () => {
     await auth.api.unbanUser({ body: { userId: bannedId }, headers: adminHeaders });
     const restored = await signIn("banned@example.test");
     expect(await auth.api.getSession({ headers: restored })).not.toBeNull();
+  });
+});
+
+describe("sign-in rate limit (production)", () => {
+  /** Production config on the same database, as a second app instance or a restart would be. */
+  const productionAuth = () =>
+    createAuth({
+      db,
+      secret: "test-secret-that-is-at-least-32-characters-long",
+      baseURL: "http://localhost:3000",
+      production: true,
+      withNextCookies: false,
+    });
+
+  const attempt = (instance: Auth, ip: string) =>
+    instance.handler(
+      new Request("http://localhost:3000/api/auth/sign-in/email", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          origin: "http://localhost:3000",
+          "x-forwarded-for": ip,
+        },
+        body: JSON.stringify({ email: "nobody@example.test", password: "wrong-password-123" }),
+      }),
+    );
+
+  it("allows 5 attempts a minute per IP, counted in Postgres across instances", async () => {
+    const first = productionAuth();
+    for (let i = 0; i < 5; i++) {
+      expect((await attempt(first, "203.0.113.7")).status).toBe(401);
+    }
+    // A fresh instance (another server, or after a restart) still sees the count.
+    const blocked = await attempt(productionAuth(), "203.0.113.7");
+    expect(blocked.status).toBe(429);
+    expect(Number(blocked.headers.get("x-retry-after"))).toBeGreaterThan(0);
+
+    // Other IPs are unaffected.
+    expect((await attempt(first, "198.51.100.4")).status).toBe(401);
+    const counters = await db.select().from(rateLimits);
+    expect(counters.some((c) => c.key.startsWith("auth:"))).toBe(true);
   });
 });

@@ -44,3 +44,24 @@ export async function consumeRateLimit(
   }
   return { remaining: limit - row.count, resetAt: new Date(resetAt) };
 }
+
+/**
+ * Better Auth's rate-limit storage on the same Postgres counters, so sign-in limits hold across
+ * restarts and instances (its default is per-process memory). Keys are prefixed so they can't
+ * collide with API keys' counters.
+ */
+export function authRateLimitStorage(db: AnyDatabase) {
+  return {
+    async consume(key: string, rule: { window: number; max: number }) {
+      try {
+        await consumeRateLimit(db, `auth:${key}`, rule.max, { windowSeconds: rule.window });
+        return { allowed: true, retryAfter: null };
+      } catch (error) {
+        if (error instanceof AppError && error.code === "RATE_LIMITED") {
+          return { allowed: false, retryAfter: error.retryAfterSeconds ?? rule.window };
+        }
+        throw error;
+      }
+    },
+  };
+}
