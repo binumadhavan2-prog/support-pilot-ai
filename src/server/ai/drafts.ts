@@ -40,10 +40,21 @@ export const draftOutputSchema = z.object({
 
 export type DraftOutput = z.infer<typeof draftOutputSchema>;
 
-/** The model boundary. Production uses Claude; tests pass a mock (no network, no cost). */
+export interface DraftSource {
+  documentTitle: string;
+  content: string;
+}
+
+/**
+ * The model boundary: Claude, the built-in template (no key set), or a mock in tests. `context`
+ * carries the same ticket and sources as plain data, for implementations that don't read prompts.
+ */
 export interface DraftModel {
   readonly model: string;
-  draft(userMessage: string): Promise<ModelCall<DraftOutput>>;
+  draft(
+    userMessage: string,
+    context?: { customerName: string; subject: string; sources: DraftSource[] },
+  ): Promise<ModelCall<DraftOutput>>;
 }
 
 export function createClaudeDraftModel({
@@ -170,6 +181,7 @@ export async function generateDraft(
         },
         hits,
       ),
+      { customerName: ticket.customerName, subject: ticket.subject, sources: hits },
     );
     usage = call;
     const text = redactor.restore(call.output.reply).trim();
@@ -399,6 +411,7 @@ export async function listPendingDrafts(db: AnyDatabase, tenantId: string) {
       customerName: tickets.customerName,
       priority: tickets.priority,
       groundingStatus: aiDrafts.groundingStatus,
+      model: aiDrafts.model,
       requestedBy: user.name,
       createdAt: aiDrafts.createdAt,
     })

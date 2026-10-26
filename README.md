@@ -7,8 +7,28 @@ reply before it is sent.
 > **Status: Phases 1-4 and 7 done, Phases 5-6 mostly done.** Sign-in, roles, multi-tenancy,
 > tickets (API and email intake, inbox, status, assignment, replies emailed through Resend),
 > incidents, the knowledge base with cited answers, AI triage, AI draft replies with human
-> approval and the analytics dashboard all work. The AI features need `ANTHROPIC_API_KEY`. See
-> [Roadmap](#roadmap).
+> approval and the analytics dashboard all work. **Everything runs free, with no API key:**
+> without `ANTHROPIC_API_KEY` the app uses its built-in no-model mode (see
+> [Free mode](#free-mode-no-api-key)). See [Roadmap](#roadmap).
+
+## Free mode (no API key)
+
+With no `ANTHROPIC_API_KEY`, nothing calls a paid service and nothing extra is installed. The
+AI steps switch to built-in, deterministic code (`src/server/ai/builtin.ts`), labeled **Rules**
+or **Template** in the UI, never "AI":
+
+| Feature                | With a Claude key                    | Free mode                                                                     |
+| ---------------------- | ------------------------------------ | ----------------------------------------------------------------------------- |
+| Triage                 | Claude classifies and summarizes     | Keyword rules (English, Hinglish, Tanglish), injection patterns, same routing |
+| Draft replies          | Claude writes a cited reply          | Template quoting the best-matching help article, cited; an agent approves     |
+| Knowledge-base answers | Claude writes a cited answer         | The matching passages with their sources (search-only)                        |
+| Demo dataset           | `seed:generate` (Claude writes text) | `seed:templates` (template text, same plan and labels)                        |
+| Triage eval            | `eval:triage` (paid per ticket)      | `eval:triage -- --rules` (free)                                               |
+
+On the template golden set the rules score 76% category accuracy (target 85%, set for Claude),
+49% priority accuracy (92% within one level), 95% language accuracy and 10/10 injections flagged
+with no false flags. The tickets were written from templates, so real customer wording would
+score lower. Adding a key later switches everything to Claude with no other change.
 
 ## Architecture
 
@@ -195,7 +215,8 @@ Each new ticket queues a `triage_ticket` job (`npm run jobs:work` runs them):
 category, priority and language accuracy, injection recall and precision, and both confusion
 matrices. It saves the run to `eval_runs` (predictions only, no golden labels) and exits non-zero
 unless category accuracy is at least 85% and every injection ticket is flagged. It makes one paid
-API call per golden ticket; `--limit 10 --no-save` is a cheap smoke test.
+API call per golden ticket; `--limit 10 --no-save` is a cheap smoke test, and `--rules` scores the
+free keyword triage instead (no key).
 
 ## Ticket API
 
@@ -270,9 +291,10 @@ demo viewer.
 (subscription billing software) into the `acme` tenant: 50 customer accounts with invoices, 40
 KB articles, 5 internal runbooks, 3 incidents with alert and log bundles, and 300 tickets
 (Hinglish and Tanglish ones, angry customers, 10 prompt-injection attempts). Tickets load
-untriaged. `seed/data` is written by Claude via `npm run seed:generate` (needs
-`ANTHROPIC_API_KEY`, roughly $1–3). Every file carries a demo notice. See `seed/` and
-`evals/README.md`.
+untriaged. `seed/data` comes from `npm run seed:templates` (free, no model, deterministic; the
+committed files) or `npm run seed:generate` (Claude writes richer text; needs `ANTHROPIC_API_KEY`,
+roughly $1–3). Both follow the same plan in `seed/lib/plan.ts`. Every file carries a demo notice.
+See `seed/` and `evals/README.md`.
 
 **Local dev database (no account):** a small companion project, `support-pilot-devdb` (kept
 next to this repo, not in it), runs PGlite with pgvector over the Postgres protocol on `127.0.0.1:54322`. Point the app at it with
@@ -303,9 +325,10 @@ transaction pooler (port 6543) works for the app, because the client disables pr
 | `npm run auth:create-admin` | Create an admin from `ADMIN_NAME` / `ADMIN_EMAIL` / `ADMIN_PASSWORD`               |
 | `npm run db:seed:demo`      | Create the three labeled demo accounts (needs `DEMO_USER_PASSWORD`)                |
 | `npm run api-key:create`    | Create an API key for `TENANT_SLUG` named `KEY_NAME` (printed once)                |
-| `npm run jobs:work`         | Run queued background jobs (AI triage, paid) until Ctrl+C                          |
-| `npm run eval:triage`       | Score triage on the golden set (paid; `--limit N`, `--no-save`)                    |
+| `npm run jobs:work`         | Run queued background jobs (triage, reply emails) until Ctrl+C                     |
+| `npm run eval:triage`       | Score triage on the golden set (paid; `--rules` free, `--limit N`, `--no-save`)    |
 | `npm run seed:generate`     | Write the demo dataset to `seed/data` with Claude (resumable; `--only`, `--force`) |
+| `npm run seed:templates`    | Write the demo dataset from templates: free, no model (`--force` to overwrite)     |
 | `npm run seed:load`         | Load `seed/data` into the `acme` tenant (idempotent; embeds chunks locally)        |
 | `npm run seed:golden`       | Build `evals/golden_tickets.jsonl` (100 labeled tickets) from the dataset          |
 
@@ -321,7 +344,7 @@ with a clear message if any are invalid. Error messages name the variable but ne
 | `LOG_LEVEL`          | No         | `debug` / `info` / `warn` / `error`                          |
 | `BETTER_AUTH_SECRET` | Yes        | 32+ characters; signs session cookies                        |
 | `BETTER_AUTH_URL`    | Production | Public base URL; defaults to localhost:3000 in dev           |
-| `ANTHROPIC_API_KEY`  | For AI     | Claude API: `seed:generate` now, AI features later           |
+| `ANTHROPIC_API_KEY`  | No         | Claude for AI features; without it, free built-in mode       |
 | `SEED_MODEL`         | No         | Model for `seed:generate` (default `claude-sonnet-5-5`)      |
 | `TRIAGE_MODEL`       | No         | Model for triage and its eval (default `claude-opus-5-5`)    |
 | `ANSWER_MODEL`       | No         | Model for knowledge-base answers (default `claude-opus-5-5`) |
@@ -410,7 +433,7 @@ the Compose stack, waits for `/api/health` and checks the native modules load.
 ### Docker
 
 ```bash
-cp .env.example .env      # set BETTER_AUTH_SECRET; ANTHROPIC_API_KEY turns on the AI features
+cp .env.example .env      # set BETTER_AUTH_SECRET; optional ANTHROPIC_API_KEY switches to Claude
 docker compose up --build # http://localhost:3000
 ```
 
@@ -462,8 +485,9 @@ Docker instead. The build needs no secrets, startup validates the environment, a
 
 ## Known limitations (current phase)
 
-- The demo dataset and the golden set need `ANTHROPIC_API_KEY` to generate; until then
-  `seed/data` and `evals/golden_tickets.jsonl` do not exist.
+- The committed demo dataset and golden set are template-written (`seed:templates`): plainer and
+  more repetitive than Claude-written text, and the golden labels are the plan's, not
+  human-verified (`review_status` stays `ai_labeled`).
 - Migration 0003 adds `NOT NULL tenant_id` without a backfill. That is safe because no database
   held data when it was written; one with existing rows would need a backfill step first.
 - RLS policies are not used for tenant isolation (the app connects as the table owner). Isolation
@@ -481,11 +505,10 @@ Docker instead. The build needs no secrets, startup validates the environment, a
 - Knowledge-base answers are tested with a mock model only (no API key yet); their real quality
   is unmeasured, and there is no answer eval yet. Retrieval was checked with the real embedding
   model on a few examples, not on a benchmark.
-- Documents: Markdown and plain text only; uploads embed inside the request (a few seconds for
-  a large file on first use while the model loads).
-- The triage eval has not been run yet: it needs `ANTHROPIC_API_KEY` and the golden set (which
-  itself needs `npm run seed:generate`). Triage is unit- and integration-tested with a mock model
-  only, so its real accuracy is unmeasured.
+- Uploads embed inside the request (a few seconds for a large file on first use while the
+  model loads).
+- The Claude triage eval has not been run (no key yet), so Claude's real accuracy is unmeasured.
+  The free rules triage has been measured (see [Free mode](#free-mode-no-api-key)).
 - The installed SDK's structured-output helper (`@anthropic-ai/sdk` 0.135) sends enum values as
   a description hint, not an `enum` constraint, so the API does not enforce them. Zod validates
   every answer afterwards; an out-of-range value fails the call and the job retries.

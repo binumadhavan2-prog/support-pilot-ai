@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
-import { AiBadge, PageHeader, PriorityBadge } from "@/components/app-ui";
+import { ModelBadge, PageHeader, PriorityBadge } from "@/components/app-ui";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -79,7 +79,7 @@ async function Content() {
               </TableCell>
               <TableCell>
                 <div className="flex flex-wrap gap-1">
-                  <AiBadge />
+                  <ModelBadge model={d.model} />
                   {d.groundingStatus === "grounded" ? (
                     <Badge variant="secondary">From help articles</Badge>
                   ) : (

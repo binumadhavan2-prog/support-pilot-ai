@@ -1,0 +1,35 @@
+{
+  "meta": {
+    "notice": "DEMO DATA. Fictional company \"Acme Cloud\", generated for testing and demos. No real customers, people or payment data.",
+    "generator": "seed/templates.mts",
+    "model": null,
+    "generatedAt": "2026-10-26T10:14:04.130Z"
+  },
+  "items": [
+    {
+      "ref": "RB-001",
+      "title": "Runbook: Refunding a duplicate charge",
+      "body": "INTERNAL. Refunding a duplicate charge: use this when a ticket or alert points to this problem.\n\n## Triage checklist\n\n- Confirm the account ID and the affected invoices or users.\n- Check status.acmecloud.example and the on-call channel for a known incident.\n- Note the time the problem started.\n\n## Steps\n\n1. Verify both charges in the gateway.\n2. Refund the later one.\n3. Credit note.\n4. Customer reply.\n5. Audit note.\n\n## Customer communication\n\nAcknowledge the problem, say what we are doing and when the customer will hear from us next. Never promise a refund or account change before it is approved.\n\n## Safety rule\n\nRefunds and account changes need a second person's approval, recorded in the admin console.\n\n## Escalation\n\nEscalate to the on-call engineer if more than one customer is affected or the problem lasts longer than 30 minutes."
+    },
+    {
+      "ref": "RB-002",
+      "title": "Runbook: Payment gateway webhook failures",
+      "body": "INTERNAL. Payment gateway webhook failures: use this when a ticket or alert points to this problem.\n\n## Triage checklist\n\n- Confirm the account ID and the affected invoices or users.\n- Check status.acmecloud.example and the on-call channel for a known incident.\n- Note the time the problem started.\n\n## Steps\n\n1. Check gateway status.\n2. Delivery logs.\n3. Replay failed events.\n4. Reconcile invoice states.\n5. Customer comms.\n\n## Customer communication\n\nAcknowledge the problem, say what we are doing and when the customer will hear from us next. Never promise a refund or account change before it is approved.\n\n## Safety rule\n\nRefunds and account changes need a second person's approval, recorded in the admin console.\n\n## Escalation\n\nEscalate to the on-call engineer if more than one customer is affected or the problem lasts longer than 30 minutes."
+    },
+    {
+      "ref": "RB-003",
+      "title": "Runbook: Invoice PDF generation outage",
+      "body": "INTERNAL. Invoice PDF generation outage: use this when a ticket or alert points to this problem.\n\n## Triage checklist\n\n- Confirm the account ID and the affected invoices or users.\n- Check status.acmecloud.example and the on-call channel for a known incident.\n- Note the time the problem started.\n\n## Steps\n\n1. Check renderer queue depth and errors.\n2. Restart workers.\n3. Regenerate affected PDFs.\n4. Status page.\n\n## Customer communication\n\nAcknowledge the problem, say what we are doing and when the customer will hear from us next. Never promise a refund or account change before it is approved.\n\n## Safety rule\n\nRefunds and account changes need a second person's approval, recorded in the admin console.\n\n## Escalation\n\nEscalate to the on-call engineer if more than one customer is affected or the problem lasts longer than 30 minutes."
+    },
+    {
+      "ref": "RB-004",
+      "title": "Runbook: Suspected account takeover",
+      "body": "INTERNAL. Suspected account takeover: use this when a ticket or alert points to this problem.\n\n## Triage checklist\n\n- Confirm the account ID and the affected invoices or users.\n- Check status.acmecloud.example and the on-call channel for a known incident.\n- Note the time the problem started.\n\n## Steps\n\n1. Lock account.\n2. Revoke sessions and API keys.\n3. Verify owner identity.\n4. Review audit log.\n5. Never share data before verification.\n\n## Customer communication\n\nAcknowledge the problem, say what we are doing and when the customer will hear from us next. Never promise a refund or account change before it is approved.\n\n## Safety rule\n\nRefunds and account changes need a second person's approval, recorded in the admin console.\n\n## Escalation\n\nEscalate to the on-call engineer if more than one customer is affected or the problem lasts longer than 30 minutes."
+    },
+    {
+      "ref": "RB-005",
+      "title": "Runbook: Email delivery delays",
+      "body": "INTERNAL. Email delivery delays: use this when a ticket or alert points to this problem.\n\n## Triage checklist\n\n- Confirm the account ID and the affected invoices or users.\n- Check status.acmecloud.example and the on-call channel for a known incident.\n- Note the time the problem started.\n\n## Steps\n\n1. Provider status.\n2. Queue backlog.\n3. Bounce rates.\n4. Resend in bulk after recovery.\n5. Status page updates.\n\n## Customer communication\n\nAcknowledge the problem, say what we are doing and when the customer will hear from us next. Never promise a refund or account change before it is approved.\n\n## Safety rule\n\nRefunds and account changes need a second person's approval, recorded in the admin console.\n\n## Escalation\n\nEscalate to the on-call engineer if more than one customer is affected or the problem lasts longer than 30 minutes."
+    }
+  ]
+}

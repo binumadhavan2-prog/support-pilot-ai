@@ -25,6 +25,7 @@
     "api-key:create": "tsx --conditions=react-server scripts/create-api-key.mts",
     "jobs:work": "tsx --conditions=react-server scripts/worker.mts",
     "seed:generate": "tsx --conditions=react-server seed/generate.mts",
+    "seed:templates": "tsx --conditions=react-server seed/templates.mts",
     "seed:load": "tsx --conditions=react-server seed/load.mts",
     "seed:golden": "tsx --conditions=react-server seed/build-golden.mts",
     "eval:triage": "tsx --conditions=react-server evals/run-triage.mts"

@@ -6,9 +6,11 @@ import {
   fallbackReply,
   generateDraft,
   getLatestDraft,
+  type DraftModel,
   listPendingDrafts,
   reviewDraft,
 } from "@/server/ai/drafts";
+import { createTemplateDraftModel } from "@/server/ai/builtin";
 import { addDocument } from "@/server/knowledge/documents";
 import { createTicket, getTicket } from "@/server/tickets";
 import { mockDraftModel, mockEmbedder } from "../ai/mock-knowledge";
@@ -82,9 +84,29 @@ async function ticket(
   );
 }
 
-const deps = (model = mockDraftModel()) => ({ embedQuery: mockEmbedder.embedQuery, model, log });
+const deps = (model: DraftModel = mockDraftModel()) => ({
+  embedQuery: mockEmbedder.embedQuery,
+  model,
+  log,
+});
 
 describe("generateDraft", () => {
+  it("drafts from the top help article with the built-in template (no AI, no key)", async () => {
+    const t = await ticket();
+    const { grounded } = await generateDraft(
+      db,
+      { tenantId: tenantA, ticketId: t.id, userId: "agent_a" },
+      deps(createTemplateDraftModel()),
+    );
+    expect(grounded).toBe(true);
+    const draft = await getLatestDraft(db, tenantA, t.id);
+    expect(draft).toMatchObject({ model: "builtin-template-v1", inputTokens: 0, outputTokens: 0 });
+    expect(draft?.body).toMatch(/^Hi Priya,/);
+    expect(draft?.body).toContain("click Refund");
+    expect(draft?.body).not.toContain("RB-SECRET"); // runbooks are never quoted to customers
+    expect(draft?.sources.map((s) => s.position)).toEqual([1]);
+  });
+
   it("drafts from help articles only, redacts PII, and saves citations and an audit row", async () => {
     const t = await ticket();
     const model = mockDraftModel();

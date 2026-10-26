@@ -67,6 +67,14 @@ for (const [label, file, mimeType] of [
   test(`an admin uploads a ${label} and finds its text`, async ({ page }) => {
     const title = `E2E ${label} ${Date.now()}`;
     await page.goto("/knowledge");
+    // The fixture's content never changes, so a copy left by an interrupted run would be refused
+    // as a duplicate: remove it first.
+    const leftovers = page.getByRole("row").filter({ hasText: `E2E ${label} ` });
+    for (let n = await leftovers.count(); n > 0; n--) {
+      page.once("dialog", (dialog) => dialog.accept());
+      await leftovers.first().getByRole("button", { name: "Delete" }).click();
+      await expect(leftovers).toHaveCount(n - 1);
+    }
     await page.getByLabel(/^File/).setInputFiles({
       name: `e2e-${file}`,
       mimeType,
@@ -78,7 +86,8 @@ for (const [label, file, mimeType] of [
 
     await page.getByLabel("Question").fill("is a duplicate charge refunded automatically?");
     await page.getByRole("button", { name: "Ask" }).click();
-    await expect(page.locator("#source-1")).toContainText(title);
+    // Among the sources, not necessarily first: demo help articles may cover the same topic.
+    await expect(page.locator('[id^="source-"]').filter({ hasText: title })).toHaveCount(1);
 
     page.once("dialog", (dialog) => dialog.accept());
     await page

@@ -93,6 +93,19 @@ export function AiBadge() {
   );
 }
 
+/**
+ * Who produced a triage or draft: AI (a real model) or the built-in no-model mode, whose model
+ * names start with "builtin-" (see server/ai/builtin.ts). Never label rules output as AI.
+ */
+export function ModelBadge({ model }: { model: string }) {
+  if (!model.startsWith("builtin-")) return <AiBadge />;
+  return (
+    <Badge variant="outline" className="text-muted-foreground" title="Built-in, no AI model">
+      {model.includes("rules") ? "Rules" : "Template"}
+    </Badge>
+  );
+}
+
 export function StatusBadge({ status }: { status: string }) {
   return (
     <Badge variant="outline" className="capitalize">

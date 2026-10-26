@@ -7,7 +7,9 @@
  *   npm run eval:triage -- --limit 10 --no-save # quick check, nothing written
  *
  * PAID: one Claude API request per golden ticket (needs ANTHROPIC_API_KEY). Set TRIAGE_MODEL to
- * compare models.
+ * compare models. FREE with --rules: scores the built-in keyword triage instead (no key, no AI).
+ *
+ *   npm run eval:triage -- --rules --no-save
  */
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
@@ -16,6 +18,7 @@ import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import * as schema from "@/db/schema";
 import { z } from "zod";
+import { createRulesTriageModel } from "@/server/ai/builtin";
 import { createClaudeTriageModel, DEFAULT_TRIAGE_MODEL, triageText } from "@/server/ai/triage";
 import { parseGoldenJsonl } from "@/server/evals/golden";
 import {
@@ -34,6 +37,7 @@ const { values: args } = parseArgs({
     limit: { type: "string" },
     concurrency: { type: "string", default: "4" },
     "no-save": { type: "boolean", default: false },
+    rules: { type: "boolean", default: false },
   },
 });
 
@@ -45,9 +49,11 @@ try {
 // Only what the eval itself needs; DATABASE_URL is required only when saving the run.
 const env = z
   .object({
-    ANTHROPIC_API_KEY: z
-      .string({ error: "ANTHROPIC_API_KEY is required (the eval calls Claude per ticket)" })
-      .min(1, "ANTHROPIC_API_KEY is required (the eval calls Claude per ticket)"),
+    ANTHROPIC_API_KEY: args.rules
+      ? z.string().optional()
+      : z
+          .string({ error: "ANTHROPIC_API_KEY is required (or use --rules for the free eval)" })
+          .min(1, "ANTHROPIC_API_KEY is required (or use --rules for the free eval)"),
     TRIAGE_MODEL: z.string().min(1).default(DEFAULT_TRIAGE_MODEL),
     DATABASE_URL: args["no-save"]
       ? z.string().optional()
@@ -72,13 +78,11 @@ try {
 }
 const all = parseGoldenJsonl(text);
 const golden = args.limit ? all.slice(0, Number(args.limit)) : all;
-const model = createClaudeTriageModel({
-  apiKey: env.data.ANTHROPIC_API_KEY,
-  model: env.data.TRIAGE_MODEL,
-});
-console.log(
-  `Triage eval: ${golden.length} cases, model ${model.model} (${golden.length} paid API calls)\n`,
-);
+const model = args.rules
+  ? createRulesTriageModel()
+  : createClaudeTriageModel({ apiKey: env.data.ANTHROPIC_API_KEY!, model: env.data.TRIAGE_MODEL });
+const cost = args.rules ? "free, no AI" : `${golden.length} paid API calls`;
+console.log(`Triage eval: ${golden.length} cases, model ${model.model} (${cost})\n`);
 
 const cases: TriageCase[] = new Array(golden.length);
 let inputTokens = 0;

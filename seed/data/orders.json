@@ -1,0 +1,2503 @@
+{
+  "meta": {
+    "notice": "DEMO DATA. Fictional company \"Acme Cloud\", generated for testing and demos. No real customers, people or payment data.",
+    "generator": "seed/lib/plan.ts",
+    "model": null,
+    "generatedAt": "2026-10-26T10:14:04.077Z"
+  },
+  "items": [
+    {
+      "ref": "INV-10001",
+      "accountRef": "ACC-0001",
+      "description": "Growth plan, monthly (Jul 2026)",
+      "amountCents": 799900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-07-27T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10002",
+      "accountRef": "ACC-0001",
+      "description": "Growth plan, monthly (Aug 2026)",
+      "amountCents": 799900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-08-26T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10003",
+      "accountRef": "ACC-0001",
+      "description": "Growth plan, monthly (Sep 2026)",
+      "amountCents": 799900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-09-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10004",
+      "accountRef": "ACC-0002",
+      "description": "Growth plan, monthly (Jun 2026)",
+      "amountCents": 799900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-06-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10005",
+      "accountRef": "ACC-0002",
+      "description": "Growth plan, monthly (Jul 2026)",
+      "amountCents": 799900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-07-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10006",
+      "accountRef": "ACC-0002",
+      "description": "Growth plan, monthly (Aug 2026)",
+      "amountCents": 799900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-08-31T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10007",
+      "accountRef": "ACC-0002",
+      "description": "Growth plan, monthly (Sep 2026)",
+      "amountCents": 799900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-09-27T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10008",
+      "accountRef": "ACC-0003",
+      "description": "Scale plan, monthly (Jan 2026)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-01-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10009",
+      "accountRef": "ACC-0003",
+      "description": "Scale plan, monthly (Mar 2026)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-03-01T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10010",
+      "accountRef": "ACC-0003",
+      "description": "Scale plan, monthly (Mar 2026)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-03-31T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10011",
+      "accountRef": "ACC-0003",
+      "description": "Scale plan, monthly (Apr 2026)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-04-28T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10012",
+      "accountRef": "ACC-0003",
+      "description": "Scale plan, monthly (May 2026)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-05-30T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10013",
+      "accountRef": "ACC-0003",
+      "description": "Scale plan, monthly (Jun 2026)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-06-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10014",
+      "accountRef": "ACC-0003",
+      "description": "Scale plan, monthly (Jul 2026)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-07-28T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10015",
+      "accountRef": "ACC-0003",
+      "description": "Scale plan, monthly (Aug 2026)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-08-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10016",
+      "accountRef": "ACC-0003",
+      "description": "Scale plan, monthly (Sep 2026)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-09-30T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10017",
+      "accountRef": "ACC-0004",
+      "description": "Growth plan, annual (Sep 2026)",
+      "amountCents": 7999000,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-09-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10018",
+      "accountRef": "ACC-0005",
+      "description": "Growth plan, monthly (Jan 2026)",
+      "amountCents": 799900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-01-30T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10019",
+      "accountRef": "ACC-0005",
+      "description": "Growth plan, monthly (Mar 2026)",
+      "amountCents": 799900,
+      "currency": "INR",
+      "status": "refunded",
+      "orderedAt": "2026-03-03T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10020",
+      "accountRef": "ACC-0005",
+      "description": "Growth plan, monthly (Apr 2026)",
+      "amountCents": 799900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-04-01T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10021",
+      "accountRef": "ACC-0005",
+      "description": "Growth plan, monthly (Apr 2026)",
+      "amountCents": 799900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-04-30T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10022",
+      "accountRef": "ACC-0005",
+      "description": "Growth plan, monthly (May 2026)",
+      "amountCents": 799900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-05-31T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10023",
+      "accountRef": "ACC-0005",
+      "description": "Growth plan, monthly (Jun 2026)",
+      "amountCents": 799900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-06-28T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10024",
+      "accountRef": "ACC-0005",
+      "description": "Growth plan, monthly (Jul 2026)",
+      "amountCents": 799900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-07-27T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10025",
+      "accountRef": "ACC-0005",
+      "description": "Growth plan, monthly (Aug 2026)",
+      "amountCents": 799900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-08-27T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10026",
+      "accountRef": "ACC-0005",
+      "description": "Growth plan, monthly (Sep 2026)",
+      "amountCents": 799900,
+      "currency": "INR",
+      "status": "failed",
+      "orderedAt": "2026-09-25T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10027",
+      "accountRef": "ACC-0006",
+      "description": "Enterprise plan, monthly (Apr 2026)",
+      "amountCents": 9999900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-04-01T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10028",
+      "accountRef": "ACC-0006",
+      "description": "Enterprise plan, monthly (May 2026)",
+      "amountCents": 9999900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-05-03T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10029",
+      "accountRef": "ACC-0006",
+      "description": "Enterprise plan, monthly (May 2026)",
+      "amountCents": 9999900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-05-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10030",
+      "accountRef": "ACC-0006",
+      "description": "Enterprise plan, monthly (Jul 2026)",
+      "amountCents": 9999900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-07-02T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10031",
+      "accountRef": "ACC-0006",
+      "description": "Enterprise plan, monthly (Jul 2026)",
+      "amountCents": 9999900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-07-28T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10032",
+      "accountRef": "ACC-0006",
+      "description": "Enterprise plan, monthly (Aug 2026)",
+      "amountCents": 9999900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-08-27T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10033",
+      "accountRef": "ACC-0006",
+      "description": "Enterprise plan, monthly (Sep 2026)",
+      "amountCents": 9999900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-09-28T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10034",
+      "accountRef": "ACC-0007",
+      "description": "Scale plan, annual (Sep 2026)",
+      "amountCents": 24999000,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-09-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10035",
+      "accountRef": "ACC-0008",
+      "description": "Scale plan, monthly (Nov 2025)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2025-11-02T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10036",
+      "accountRef": "ACC-0008",
+      "description": "Scale plan, monthly (Dec 2025)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2025-12-01T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10037",
+      "accountRef": "ACC-0008",
+      "description": "Scale plan, monthly (Jan 2026)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-01-01T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10038",
+      "accountRef": "ACC-0008",
+      "description": "Scale plan, monthly (Feb 2026)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-02-02T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10039",
+      "accountRef": "ACC-0008",
+      "description": "Scale plan, monthly (Mar 2026)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-03-04T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10040",
+      "accountRef": "ACC-0008",
+      "description": "Scale plan, monthly (Mar 2026)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-03-31T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10041",
+      "accountRef": "ACC-0008",
+      "description": "Scale plan, monthly (May 2026)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-05-01T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10042",
+      "accountRef": "ACC-0008",
+      "description": "Scale plan, monthly (May 2026)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-05-30T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10043",
+      "accountRef": "ACC-0008",
+      "description": "Scale plan, monthly (Jul 2026)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-07-02T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10044",
+      "accountRef": "ACC-0008",
+      "description": "Scale plan, monthly (Jul 2026)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-07-28T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10045",
+      "accountRef": "ACC-0008",
+      "description": "Scale plan, monthly (Aug 2026)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-08-27T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10046",
+      "accountRef": "ACC-0008",
+      "description": "Scale plan, monthly (Sep 2026)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-09-30T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10047",
+      "accountRef": "ACC-0009",
+      "description": "Scale plan, monthly (Feb 2026)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-02-01T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10048",
+      "accountRef": "ACC-0009",
+      "description": "Scale plan, monthly (Feb 2026)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-02-27T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10049",
+      "accountRef": "ACC-0009",
+      "description": "Scale plan, monthly (Mar 2026)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-03-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10050",
+      "accountRef": "ACC-0009",
+      "description": "Scale plan, monthly (Apr 2026)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-04-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10051",
+      "accountRef": "ACC-0009",
+      "description": "Scale plan, monthly (May 2026)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-05-31T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10052",
+      "accountRef": "ACC-0009",
+      "description": "Scale plan, monthly (Jun 2026)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-06-28T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10053",
+      "accountRef": "ACC-0009",
+      "description": "Scale plan, monthly (Jul 2026)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-07-28T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10054",
+      "accountRef": "ACC-0009",
+      "description": "Scale plan, monthly (Aug 2026)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-08-26T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10055",
+      "accountRef": "ACC-0009",
+      "description": "Scale plan, monthly (Sep 2026)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "failed",
+      "orderedAt": "2026-09-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10056",
+      "accountRef": "ACC-0010",
+      "description": "Starter plan, monthly (Oct 2025)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2025-10-31T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10057",
+      "accountRef": "ACC-0010",
+      "description": "Starter plan, monthly (Dec 2025)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2025-12-01T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10058",
+      "accountRef": "ACC-0010",
+      "description": "Starter plan, monthly (Jan 2026)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-01-02T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10059",
+      "accountRef": "ACC-0010",
+      "description": "Starter plan, monthly (Jan 2026)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-01-31T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10060",
+      "accountRef": "ACC-0010",
+      "description": "Starter plan, monthly (Feb 2026)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-02-27T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10061",
+      "accountRef": "ACC-0010",
+      "description": "Starter plan, monthly (Apr 2026)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-04-03T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10062",
+      "accountRef": "ACC-0010",
+      "description": "Starter plan, monthly (May 2026)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-05-03T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10063",
+      "accountRef": "ACC-0010",
+      "description": "Starter plan, monthly (Jun 2026)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-06-01T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10064",
+      "accountRef": "ACC-0010",
+      "description": "Starter plan, monthly (Jul 2026)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-07-02T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10065",
+      "accountRef": "ACC-0010",
+      "description": "Starter plan, monthly (Aug 2026)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-08-01T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10066",
+      "accountRef": "ACC-0010",
+      "description": "Starter plan, monthly (Aug 2026)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-08-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10067",
+      "accountRef": "ACC-0010",
+      "description": "Starter plan, monthly (Sep 2026)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "failed",
+      "orderedAt": "2026-09-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10068",
+      "accountRef": "ACC-0012",
+      "description": "Starter plan, annual (Sep 2026)",
+      "amountCents": 2399000,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-09-30T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10069",
+      "accountRef": "ACC-0013",
+      "description": "Starter plan, monthly (Feb 2026)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-02-28T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10070",
+      "accountRef": "ACC-0013",
+      "description": "Starter plan, monthly (Apr 2026)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-04-01T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10071",
+      "accountRef": "ACC-0013",
+      "description": "Starter plan, monthly (May 2026)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-05-01T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10072",
+      "accountRef": "ACC-0013",
+      "description": "Starter plan, monthly (Jun 2026)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-06-01T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10073",
+      "accountRef": "ACC-0013",
+      "description": "Starter plan, monthly (Jul 2026)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-07-01T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10074",
+      "accountRef": "ACC-0013",
+      "description": "Starter plan, monthly (Jul 2026)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-07-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10075",
+      "accountRef": "ACC-0013",
+      "description": "Starter plan, monthly (Aug 2026)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-08-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10076",
+      "accountRef": "ACC-0013",
+      "description": "Starter plan, monthly (Sep 2026)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "failed",
+      "orderedAt": "2026-09-30T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10077",
+      "accountRef": "ACC-0014",
+      "description": "Growth plan, annual (Sep 2026)",
+      "amountCents": 7999000,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-09-30T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10078",
+      "accountRef": "ACC-0015",
+      "description": "Starter plan, monthly (Nov 2025)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2025-11-02T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10079",
+      "accountRef": "ACC-0015",
+      "description": "Starter plan, monthly (Dec 2025)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2025-12-02T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10080",
+      "accountRef": "ACC-0015",
+      "description": "Starter plan, monthly (Dec 2025)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2025-12-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10081",
+      "accountRef": "ACC-0015",
+      "description": "Starter plan, monthly (Jan 2026)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-01-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10082",
+      "accountRef": "ACC-0015",
+      "description": "Starter plan, monthly (Mar 2026)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "refunded",
+      "orderedAt": "2026-03-02T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10083",
+      "accountRef": "ACC-0015",
+      "description": "Starter plan, monthly (Mar 2026)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "refunded",
+      "orderedAt": "2026-03-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10084",
+      "accountRef": "ACC-0015",
+      "description": "Starter plan, monthly (May 2026)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-05-03T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10085",
+      "accountRef": "ACC-0015",
+      "description": "Starter plan, monthly (May 2026)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-05-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10086",
+      "accountRef": "ACC-0015",
+      "description": "Starter plan, monthly (Jun 2026)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-06-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10087",
+      "accountRef": "ACC-0015",
+      "description": "Starter plan, monthly (Jul 2026)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-07-31T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10088",
+      "accountRef": "ACC-0015",
+      "description": "Starter plan, monthly (Aug 2026)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-08-28T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10089",
+      "accountRef": "ACC-0015",
+      "description": "Starter plan, monthly (Sep 2026)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-09-27T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10090",
+      "accountRef": "ACC-0016",
+      "description": "Starter plan, annual (Sep 2026)",
+      "amountCents": 2399000,
+      "currency": "INR",
+      "status": "failed",
+      "orderedAt": "2026-09-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10091",
+      "accountRef": "ACC-0019",
+      "description": "Growth plan, monthly (May 2026)",
+      "amountCents": 799900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-05-02T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10092",
+      "accountRef": "ACC-0019",
+      "description": "Growth plan, monthly (May 2026)",
+      "amountCents": 799900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-05-30T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10093",
+      "accountRef": "ACC-0019",
+      "description": "Growth plan, monthly (Jun 2026)",
+      "amountCents": 799900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-06-27T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10094",
+      "accountRef": "ACC-0019",
+      "description": "Growth plan, monthly (Jul 2026)",
+      "amountCents": 799900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-07-30T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10095",
+      "accountRef": "ACC-0019",
+      "description": "Growth plan, monthly (Aug 2026)",
+      "amountCents": 799900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-08-30T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10096",
+      "accountRef": "ACC-0019",
+      "description": "Growth plan, monthly (Sep 2026)",
+      "amountCents": 799900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-09-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10097",
+      "accountRef": "ACC-0020",
+      "description": "Scale plan, monthly (Oct 2025)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2025-10-30T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10098",
+      "accountRef": "ACC-0020",
+      "description": "Scale plan, monthly (Dec 2025)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2025-12-02T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10099",
+      "accountRef": "ACC-0020",
+      "description": "Scale plan, monthly (Dec 2025)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2025-12-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10100",
+      "accountRef": "ACC-0020",
+      "description": "Scale plan, monthly (Jan 2026)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-01-31T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10101",
+      "accountRef": "ACC-0020",
+      "description": "Scale plan, monthly (Mar 2026)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-03-03T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10102",
+      "accountRef": "ACC-0020",
+      "description": "Scale plan, monthly (Mar 2026)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-03-31T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10103",
+      "accountRef": "ACC-0020",
+      "description": "Scale plan, monthly (Apr 2026)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-04-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10104",
+      "accountRef": "ACC-0020",
+      "description": "Scale plan, monthly (Jun 2026)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-06-01T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10105",
+      "accountRef": "ACC-0020",
+      "description": "Scale plan, monthly (Jun 2026)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-06-28T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10106",
+      "accountRef": "ACC-0020",
+      "description": "Scale plan, monthly (Aug 2026)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-08-01T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10107",
+      "accountRef": "ACC-0020",
+      "description": "Scale plan, monthly (Aug 2026)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-08-26T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10108",
+      "accountRef": "ACC-0020",
+      "description": "Scale plan, monthly (Sep 2026)",
+      "amountCents": 2499900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-09-27T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10109",
+      "accountRef": "ACC-0021",
+      "description": "Scale plan, annual (Sep 2026)",
+      "amountCents": 24999000,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-09-27T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10110",
+      "accountRef": "ACC-0022",
+      "description": "Starter plan, monthly (Mar 2026)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-03-31T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10111",
+      "accountRef": "ACC-0022",
+      "description": "Starter plan, monthly (May 2026)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-05-03T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10112",
+      "accountRef": "ACC-0022",
+      "description": "Starter plan, monthly (May 2026)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-05-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10113",
+      "accountRef": "ACC-0022",
+      "description": "Starter plan, monthly (Jun 2026)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-06-28T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10114",
+      "accountRef": "ACC-0022",
+      "description": "Starter plan, monthly (Jul 2026)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-07-30T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10115",
+      "accountRef": "ACC-0022",
+      "description": "Starter plan, monthly (Aug 2026)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-08-26T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10116",
+      "accountRef": "ACC-0022",
+      "description": "Starter plan, monthly (Sep 2026)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-09-30T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10117",
+      "accountRef": "ACC-0023",
+      "description": "Growth plan, monthly (Nov 2025)",
+      "amountCents": 799900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2025-11-01T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10118",
+      "accountRef": "ACC-0023",
+      "description": "Growth plan, monthly (Nov 2025)",
+      "amountCents": 799900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2025-11-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10119",
+      "accountRef": "ACC-0023",
+      "description": "Growth plan, monthly (Jan 2026)",
+      "amountCents": 799900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-01-03T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10120",
+      "accountRef": "ACC-0023",
+      "description": "Growth plan, monthly (Feb 2026)",
+      "amountCents": 799900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-02-02T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10121",
+      "accountRef": "ACC-0023",
+      "description": "Growth plan, monthly (Feb 2026)",
+      "amountCents": 799900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-02-27T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10122",
+      "accountRef": "ACC-0023",
+      "description": "Growth plan, monthly (Apr 2026)",
+      "amountCents": 799900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-04-03T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10123",
+      "accountRef": "ACC-0023",
+      "description": "Growth plan, monthly (Apr 2026)",
+      "amountCents": 799900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-04-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10124",
+      "accountRef": "ACC-0023",
+      "description": "Growth plan, monthly (May 2026)",
+      "amountCents": 799900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-05-31T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10125",
+      "accountRef": "ACC-0023",
+      "description": "Growth plan, monthly (Jul 2026)",
+      "amountCents": 799900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-07-02T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10126",
+      "accountRef": "ACC-0023",
+      "description": "Growth plan, monthly (Jul 2026)",
+      "amountCents": 799900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-07-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10127",
+      "accountRef": "ACC-0023",
+      "description": "Growth plan, monthly (Aug 2026)",
+      "amountCents": 799900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-08-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10128",
+      "accountRef": "ACC-0023",
+      "description": "Growth plan, monthly (Sep 2026)",
+      "amountCents": 799900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-09-26T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10129",
+      "accountRef": "ACC-0024",
+      "description": "Enterprise plan, monthly (Apr 2026)",
+      "amountCents": 9999900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-04-01T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10130",
+      "accountRef": "ACC-0024",
+      "description": "Enterprise plan, monthly (May 2026)",
+      "amountCents": 9999900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-05-01T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10131",
+      "accountRef": "ACC-0024",
+      "description": "Enterprise plan, monthly (May 2026)",
+      "amountCents": 9999900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-05-30T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10132",
+      "accountRef": "ACC-0024",
+      "description": "Enterprise plan, monthly (Jul 2026)",
+      "amountCents": 9999900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-07-01T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10133",
+      "accountRef": "ACC-0024",
+      "description": "Enterprise plan, monthly (Jul 2026)",
+      "amountCents": 9999900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-07-28T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10134",
+      "accountRef": "ACC-0024",
+      "description": "Enterprise plan, monthly (Aug 2026)",
+      "amountCents": 9999900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-08-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10135",
+      "accountRef": "ACC-0024",
+      "description": "Enterprise plan, monthly (Sep 2026)",
+      "amountCents": 9999900,
+      "currency": "INR",
+      "status": "pending",
+      "orderedAt": "2026-09-26T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10136",
+      "accountRef": "ACC-0025",
+      "description": "Starter plan, monthly (Jul 2026)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-07-02T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10137",
+      "accountRef": "ACC-0025",
+      "description": "Starter plan, monthly (Aug 2026)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-08-01T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10138",
+      "accountRef": "ACC-0025",
+      "description": "Starter plan, monthly (Aug 2026)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-08-26T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10139",
+      "accountRef": "ACC-0025",
+      "description": "Starter plan, monthly (Sep 2026)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-09-26T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10140",
+      "accountRef": "ACC-0026",
+      "description": "Growth plan, annual (Sep 2026)",
+      "amountCents": 7999000,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-09-30T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10141",
+      "accountRef": "ACC-0027",
+      "description": "Starter plan, annual (Sep 2026)",
+      "amountCents": 2399000,
+      "currency": "INR",
+      "status": "failed",
+      "orderedAt": "2026-09-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10142",
+      "accountRef": "ACC-0028",
+      "description": "Enterprise plan, monthly (Oct 2025)",
+      "amountCents": 9999900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2025-10-30T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10143",
+      "accountRef": "ACC-0028",
+      "description": "Enterprise plan, monthly (Dec 2025)",
+      "amountCents": 9999900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2025-12-04T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10144",
+      "accountRef": "ACC-0028",
+      "description": "Enterprise plan, monthly (Dec 2025)",
+      "amountCents": 9999900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2025-12-30T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10145",
+      "accountRef": "ACC-0028",
+      "description": "Enterprise plan, monthly (Feb 2026)",
+      "amountCents": 9999900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-02-02T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10146",
+      "accountRef": "ACC-0028",
+      "description": "Enterprise plan, monthly (Mar 2026)",
+      "amountCents": 9999900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-03-02T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10147",
+      "accountRef": "ACC-0028",
+      "description": "Enterprise plan, monthly (Mar 2026)",
+      "amountCents": 9999900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-03-30T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10148",
+      "accountRef": "ACC-0028",
+      "description": "Enterprise plan, monthly (Apr 2026)",
+      "amountCents": 9999900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-04-30T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10149",
+      "accountRef": "ACC-0028",
+      "description": "Enterprise plan, monthly (May 2026)",
+      "amountCents": 9999900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-05-28T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10150",
+      "accountRef": "ACC-0028",
+      "description": "Enterprise plan, monthly (Jul 2026)",
+      "amountCents": 9999900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-07-01T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10151",
+      "accountRef": "ACC-0028",
+      "description": "Enterprise plan, monthly (Jul 2026)",
+      "amountCents": 9999900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-07-30T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10152",
+      "accountRef": "ACC-0028",
+      "description": "Enterprise plan, monthly (Aug 2026)",
+      "amountCents": 9999900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-08-28T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10153",
+      "accountRef": "ACC-0028",
+      "description": "Enterprise plan, monthly (Sep 2026)",
+      "amountCents": 9999900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-09-27T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10154",
+      "accountRef": "ACC-0029",
+      "description": "Starter plan, monthly (Jul 2026)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-07-30T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10155",
+      "accountRef": "ACC-0029",
+      "description": "Starter plan, monthly (Aug 2026)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-08-26T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10156",
+      "accountRef": "ACC-0029",
+      "description": "Starter plan, monthly (Sep 2026)",
+      "amountCents": 239900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-09-25T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10157",
+      "accountRef": "ACC-0030",
+      "description": "Scale plan, annual (Sep 2026)",
+      "amountCents": 24999000,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-09-28T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10158",
+      "accountRef": "ACC-0031",
+      "description": "Starter plan, monthly (Dec 2025)",
+      "amountCents": 2900,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2025-12-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10159",
+      "accountRef": "ACC-0031",
+      "description": "Starter plan, monthly (Jan 2026)",
+      "amountCents": 2900,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2026-01-31T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10160",
+      "accountRef": "ACC-0031",
+      "description": "Starter plan, monthly (Feb 2026)",
+      "amountCents": 2900,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2026-02-27T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10161",
+      "accountRef": "ACC-0031",
+      "description": "Starter plan, monthly (Mar 2026)",
+      "amountCents": 2900,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2026-03-31T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10162",
+      "accountRef": "ACC-0031",
+      "description": "Starter plan, monthly (May 2026)",
+      "amountCents": 2900,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2026-05-01T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10163",
+      "accountRef": "ACC-0031",
+      "description": "Starter plan, monthly (May 2026)",
+      "amountCents": 2900,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2026-05-30T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10164",
+      "accountRef": "ACC-0031",
+      "description": "Starter plan, monthly (Jun 2026)",
+      "amountCents": 2900,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2026-06-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10165",
+      "accountRef": "ACC-0031",
+      "description": "Starter plan, monthly (Jul 2026)",
+      "amountCents": 2900,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2026-07-31T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10166",
+      "accountRef": "ACC-0031",
+      "description": "Starter plan, monthly (Aug 2026)",
+      "amountCents": 2900,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2026-08-27T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10167",
+      "accountRef": "ACC-0031",
+      "description": "Starter plan, monthly (Sep 2026)",
+      "amountCents": 2900,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2026-09-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10168",
+      "accountRef": "ACC-0032",
+      "description": "Growth plan, monthly (Mar 2026)",
+      "amountCents": 9900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-03-03T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10169",
+      "accountRef": "ACC-0032",
+      "description": "Growth plan, monthly (Mar 2026)",
+      "amountCents": 9900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-03-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10170",
+      "accountRef": "ACC-0032",
+      "description": "Growth plan, monthly (May 2026)",
+      "amountCents": 9900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-05-01T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10171",
+      "accountRef": "ACC-0032",
+      "description": "Growth plan, monthly (May 2026)",
+      "amountCents": 9900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-05-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10172",
+      "accountRef": "ACC-0032",
+      "description": "Growth plan, monthly (Jul 2026)",
+      "amountCents": 9900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-07-02T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10173",
+      "accountRef": "ACC-0032",
+      "description": "Growth plan, monthly (Jul 2026)",
+      "amountCents": 9900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-07-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10174",
+      "accountRef": "ACC-0032",
+      "description": "Growth plan, monthly (Aug 2026)",
+      "amountCents": 9900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-08-31T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10175",
+      "accountRef": "ACC-0032",
+      "description": "Growth plan, monthly (Sep 2026)",
+      "amountCents": 9900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-09-28T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10176",
+      "accountRef": "ACC-0033",
+      "description": "Growth plan, monthly (Jan 2026)",
+      "amountCents": 9900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-01-01T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10177",
+      "accountRef": "ACC-0033",
+      "description": "Growth plan, monthly (Jan 2026)",
+      "amountCents": 9900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-01-30T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10178",
+      "accountRef": "ACC-0033",
+      "description": "Growth plan, monthly (Mar 2026)",
+      "amountCents": 9900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-03-03T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10179",
+      "accountRef": "ACC-0033",
+      "description": "Growth plan, monthly (Mar 2026)",
+      "amountCents": 9900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-03-30T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10180",
+      "accountRef": "ACC-0033",
+      "description": "Growth plan, monthly (Apr 2026)",
+      "amountCents": 9900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-04-28T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10181",
+      "accountRef": "ACC-0033",
+      "description": "Growth plan, monthly (May 2026)",
+      "amountCents": 9900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-05-28T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10182",
+      "accountRef": "ACC-0033",
+      "description": "Growth plan, monthly (Jun 2026)",
+      "amountCents": 9900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-06-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10183",
+      "accountRef": "ACC-0033",
+      "description": "Growth plan, monthly (Aug 2026)",
+      "amountCents": 9900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-08-01T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10184",
+      "accountRef": "ACC-0033",
+      "description": "Growth plan, monthly (Aug 2026)",
+      "amountCents": 9900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-08-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10185",
+      "accountRef": "ACC-0033",
+      "description": "Growth plan, monthly (Sep 2026)",
+      "amountCents": 9900,
+      "currency": "USD",
+      "status": "failed",
+      "orderedAt": "2026-09-28T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10186",
+      "accountRef": "ACC-0034",
+      "description": "Starter plan, monthly (Mar 2026)",
+      "amountCents": 2900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-03-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10187",
+      "accountRef": "ACC-0034",
+      "description": "Starter plan, monthly (Apr 2026)",
+      "amountCents": 2900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-04-28T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10188",
+      "accountRef": "ACC-0034",
+      "description": "Starter plan, monthly (May 2026)",
+      "amountCents": 2900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-05-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10189",
+      "accountRef": "ACC-0034",
+      "description": "Starter plan, monthly (Jun 2026)",
+      "amountCents": 2900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-06-27T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10190",
+      "accountRef": "ACC-0034",
+      "description": "Starter plan, monthly (Jul 2026)",
+      "amountCents": 2900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-07-31T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10191",
+      "accountRef": "ACC-0034",
+      "description": "Starter plan, monthly (Aug 2026)",
+      "amountCents": 2900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-08-28T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10192",
+      "accountRef": "ACC-0034",
+      "description": "Starter plan, monthly (Sep 2026)",
+      "amountCents": 2900,
+      "currency": "USD",
+      "status": "failed",
+      "orderedAt": "2026-09-30T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10193",
+      "accountRef": "ACC-0035",
+      "description": "Growth plan, annual (Sep 2026)",
+      "amountCents": 99000,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2026-09-28T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10194",
+      "accountRef": "ACC-0036",
+      "description": "Starter plan, monthly (Oct 2025)",
+      "amountCents": 2900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2025-10-30T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10195",
+      "accountRef": "ACC-0036",
+      "description": "Starter plan, monthly (Nov 2025)",
+      "amountCents": 2900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2025-11-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10196",
+      "accountRef": "ACC-0036",
+      "description": "Starter plan, monthly (Jan 2026)",
+      "amountCents": 2900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-01-02T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10197",
+      "accountRef": "ACC-0036",
+      "description": "Starter plan, monthly (Jan 2026)",
+      "amountCents": 2900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-01-28T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10198",
+      "accountRef": "ACC-0036",
+      "description": "Starter plan, monthly (Mar 2026)",
+      "amountCents": 2900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-03-04T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10199",
+      "accountRef": "ACC-0036",
+      "description": "Starter plan, monthly (Mar 2026)",
+      "amountCents": 2900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-03-30T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10200",
+      "accountRef": "ACC-0036",
+      "description": "Starter plan, monthly (Apr 2026)",
+      "amountCents": 2900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-04-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10201",
+      "accountRef": "ACC-0036",
+      "description": "Starter plan, monthly (Jun 2026)",
+      "amountCents": 2900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-06-01T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10202",
+      "accountRef": "ACC-0036",
+      "description": "Starter plan, monthly (Jun 2026)",
+      "amountCents": 2900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-06-27T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10203",
+      "accountRef": "ACC-0036",
+      "description": "Starter plan, monthly (Jul 2026)",
+      "amountCents": 2900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-07-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10204",
+      "accountRef": "ACC-0036",
+      "description": "Starter plan, monthly (Aug 2026)",
+      "amountCents": 2900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-08-31T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10205",
+      "accountRef": "ACC-0036",
+      "description": "Starter plan, monthly (Sep 2026)",
+      "amountCents": 2900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-09-26T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10206",
+      "accountRef": "ACC-0037",
+      "description": "Scale plan, monthly (May 2026)",
+      "amountCents": 29900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-05-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10207",
+      "accountRef": "ACC-0037",
+      "description": "Scale plan, monthly (Jun 2026)",
+      "amountCents": 29900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-06-30T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10208",
+      "accountRef": "ACC-0037",
+      "description": "Scale plan, monthly (Jul 2026)",
+      "amountCents": 29900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-07-27T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10209",
+      "accountRef": "ACC-0037",
+      "description": "Scale plan, monthly (Aug 2026)",
+      "amountCents": 29900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-08-31T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10210",
+      "accountRef": "ACC-0037",
+      "description": "Scale plan, monthly (Sep 2026)",
+      "amountCents": 29900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-09-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10211",
+      "accountRef": "ACC-0038",
+      "description": "Growth plan, monthly (Mar 2026)",
+      "amountCents": 8500,
+      "currency": "GBP",
+      "status": "paid",
+      "orderedAt": "2026-03-01T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10212",
+      "accountRef": "ACC-0038",
+      "description": "Growth plan, monthly (Mar 2026)",
+      "amountCents": 8500,
+      "currency": "GBP",
+      "status": "paid",
+      "orderedAt": "2026-03-31T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10213",
+      "accountRef": "ACC-0038",
+      "description": "Growth plan, monthly (Apr 2026)",
+      "amountCents": 8500,
+      "currency": "GBP",
+      "status": "paid",
+      "orderedAt": "2026-04-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10214",
+      "accountRef": "ACC-0038",
+      "description": "Growth plan, monthly (May 2026)",
+      "amountCents": 8500,
+      "currency": "GBP",
+      "status": "paid",
+      "orderedAt": "2026-05-28T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10215",
+      "accountRef": "ACC-0038",
+      "description": "Growth plan, monthly (Jun 2026)",
+      "amountCents": 8500,
+      "currency": "GBP",
+      "status": "paid",
+      "orderedAt": "2026-06-27T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10216",
+      "accountRef": "ACC-0038",
+      "description": "Growth plan, monthly (Jul 2026)",
+      "amountCents": 8500,
+      "currency": "GBP",
+      "status": "paid",
+      "orderedAt": "2026-07-30T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10217",
+      "accountRef": "ACC-0038",
+      "description": "Growth plan, monthly (Aug 2026)",
+      "amountCents": 8500,
+      "currency": "GBP",
+      "status": "paid",
+      "orderedAt": "2026-08-28T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10218",
+      "accountRef": "ACC-0038",
+      "description": "Growth plan, monthly (Sep 2026)",
+      "amountCents": 8500,
+      "currency": "GBP",
+      "status": "paid",
+      "orderedAt": "2026-09-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10219",
+      "accountRef": "ACC-0039",
+      "description": "Enterprise plan, monthly (Jul 2026)",
+      "amountCents": 120000,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2026-07-31T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10220",
+      "accountRef": "ACC-0039",
+      "description": "Enterprise plan, monthly (Aug 2026)",
+      "amountCents": 120000,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2026-08-26T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10221",
+      "accountRef": "ACC-0039",
+      "description": "Enterprise plan, monthly (Sep 2026)",
+      "amountCents": 120000,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2026-09-30T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10222",
+      "accountRef": "ACC-0040",
+      "description": "Starter plan, monthly (Nov 2025)",
+      "amountCents": 2900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2025-11-01T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10223",
+      "accountRef": "ACC-0040",
+      "description": "Starter plan, monthly (Dec 2025)",
+      "amountCents": 2900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2025-12-01T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10224",
+      "accountRef": "ACC-0040",
+      "description": "Starter plan, monthly (Jan 2026)",
+      "amountCents": 2900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-01-01T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10225",
+      "accountRef": "ACC-0040",
+      "description": "Starter plan, monthly (Jan 2026)",
+      "amountCents": 2900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-01-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10226",
+      "accountRef": "ACC-0040",
+      "description": "Starter plan, monthly (Mar 2026)",
+      "amountCents": 2900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-03-02T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10227",
+      "accountRef": "ACC-0040",
+      "description": "Starter plan, monthly (Apr 2026)",
+      "amountCents": 2900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-04-03T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10228",
+      "accountRef": "ACC-0040",
+      "description": "Starter plan, monthly (Apr 2026)",
+      "amountCents": 2900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-04-28T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10229",
+      "accountRef": "ACC-0040",
+      "description": "Starter plan, monthly (May 2026)",
+      "amountCents": 2900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-05-28T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10230",
+      "accountRef": "ACC-0040",
+      "description": "Starter plan, monthly (Jun 2026)",
+      "amountCents": 2900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-06-30T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10231",
+      "accountRef": "ACC-0040",
+      "description": "Starter plan, monthly (Jul 2026)",
+      "amountCents": 2900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-07-28T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10232",
+      "accountRef": "ACC-0040",
+      "description": "Starter plan, monthly (Aug 2026)",
+      "amountCents": 2900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-08-26T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10233",
+      "accountRef": "ACC-0040",
+      "description": "Starter plan, monthly (Sep 2026)",
+      "amountCents": 2900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-09-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10234",
+      "accountRef": "ACC-0041",
+      "description": "Growth plan, annual (Sep 2026)",
+      "amountCents": 99000,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-09-28T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10235",
+      "accountRef": "ACC-0043",
+      "description": "Starter plan, monthly (Nov 2025)",
+      "amountCents": 2900,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2025-11-03T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10236",
+      "accountRef": "ACC-0043",
+      "description": "Starter plan, monthly (Dec 2025)",
+      "amountCents": 2900,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2025-12-01T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10237",
+      "accountRef": "ACC-0043",
+      "description": "Starter plan, monthly (Jan 2026)",
+      "amountCents": 2900,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2026-01-01T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10238",
+      "accountRef": "ACC-0043",
+      "description": "Starter plan, monthly (Feb 2026)",
+      "amountCents": 2900,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2026-02-02T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10239",
+      "accountRef": "ACC-0043",
+      "description": "Starter plan, monthly (Mar 2026)",
+      "amountCents": 2900,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2026-03-02T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10240",
+      "accountRef": "ACC-0043",
+      "description": "Starter plan, monthly (Apr 2026)",
+      "amountCents": 2900,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2026-04-01T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10241",
+      "accountRef": "ACC-0043",
+      "description": "Starter plan, monthly (Apr 2026)",
+      "amountCents": 2900,
+      "currency": "EUR",
+      "status": "refunded",
+      "orderedAt": "2026-04-30T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10242",
+      "accountRef": "ACC-0043",
+      "description": "Starter plan, monthly (Jun 2026)",
+      "amountCents": 2900,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2026-06-01T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10243",
+      "accountRef": "ACC-0043",
+      "description": "Starter plan, monthly (Jul 2026)",
+      "amountCents": 2900,
+      "currency": "EUR",
+      "status": "refunded",
+      "orderedAt": "2026-07-01T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10244",
+      "accountRef": "ACC-0043",
+      "description": "Starter plan, monthly (Jul 2026)",
+      "amountCents": 2900,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2026-07-31T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10245",
+      "accountRef": "ACC-0043",
+      "description": "Starter plan, monthly (Aug 2026)",
+      "amountCents": 2900,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2026-08-27T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10246",
+      "accountRef": "ACC-0043",
+      "description": "Starter plan, monthly (Sep 2026)",
+      "amountCents": 2900,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2026-09-30T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10247",
+      "accountRef": "ACC-0044",
+      "description": "Starter plan, monthly (Dec 2025)",
+      "amountCents": 2900,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2025-12-02T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10248",
+      "accountRef": "ACC-0044",
+      "description": "Starter plan, monthly (Dec 2025)",
+      "amountCents": 2900,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2025-12-31T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10249",
+      "accountRef": "ACC-0044",
+      "description": "Starter plan, monthly (Feb 2026)",
+      "amountCents": 2900,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2026-02-02T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10250",
+      "accountRef": "ACC-0044",
+      "description": "Starter plan, monthly (Mar 2026)",
+      "amountCents": 2900,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2026-03-04T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10251",
+      "accountRef": "ACC-0044",
+      "description": "Starter plan, monthly (Apr 2026)",
+      "amountCents": 2900,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2026-04-03T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10252",
+      "accountRef": "ACC-0044",
+      "description": "Starter plan, monthly (Apr 2026)",
+      "amountCents": 2900,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2026-04-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10253",
+      "accountRef": "ACC-0044",
+      "description": "Starter plan, monthly (May 2026)",
+      "amountCents": 2900,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2026-05-31T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10254",
+      "accountRef": "ACC-0044",
+      "description": "Starter plan, monthly (Jun 2026)",
+      "amountCents": 2900,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2026-06-28T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10255",
+      "accountRef": "ACC-0044",
+      "description": "Starter plan, monthly (Jul 2026)",
+      "amountCents": 2900,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2026-07-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10256",
+      "accountRef": "ACC-0044",
+      "description": "Starter plan, monthly (Aug 2026)",
+      "amountCents": 2900,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2026-08-30T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10257",
+      "accountRef": "ACC-0044",
+      "description": "Starter plan, monthly (Sep 2026)",
+      "amountCents": 2900,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2026-09-30T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10258",
+      "accountRef": "ACC-0045",
+      "description": "Growth plan, annual (Sep 2026)",
+      "amountCents": 99000,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-09-30T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10259",
+      "accountRef": "ACC-0046",
+      "description": "Starter plan, annual (Oct 2025)",
+      "amountCents": 29000,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2025-10-03T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10260",
+      "accountRef": "ACC-0046",
+      "description": "Starter plan, annual (Sep 2026)",
+      "amountCents": 29000,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2026-09-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10261",
+      "accountRef": "ACC-0047",
+      "description": "Starter plan, monthly (Apr 2026)",
+      "amountCents": 2900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-04-28T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10262",
+      "accountRef": "ACC-0047",
+      "description": "Starter plan, monthly (May 2026)",
+      "amountCents": 2900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-05-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10263",
+      "accountRef": "ACC-0047",
+      "description": "Starter plan, monthly (Jun 2026)",
+      "amountCents": 2900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-06-30T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10264",
+      "accountRef": "ACC-0047",
+      "description": "Starter plan, monthly (Aug 2026)",
+      "amountCents": 2900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-08-01T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10265",
+      "accountRef": "ACC-0047",
+      "description": "Starter plan, monthly (Aug 2026)",
+      "amountCents": 2900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-08-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10266",
+      "accountRef": "ACC-0047",
+      "description": "Starter plan, monthly (Sep 2026)",
+      "amountCents": 2900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-09-25T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10267",
+      "accountRef": "ACC-0048",
+      "description": "Scale plan, monthly (Aug 2026)",
+      "amountCents": 29900,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2026-08-31T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10268",
+      "accountRef": "ACC-0048",
+      "description": "Scale plan, monthly (Sep 2026)",
+      "amountCents": 29900,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2026-09-27T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10269",
+      "accountRef": "ACC-0049",
+      "description": "Starter plan, monthly (Aug 2026)",
+      "amountCents": 2900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-08-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10270",
+      "accountRef": "ACC-0049",
+      "description": "Starter plan, monthly (Sep 2026)",
+      "amountCents": 2900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-09-29T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10271",
+      "accountRef": "ACC-0050",
+      "description": "Starter plan, annual (Sep 2026)",
+      "amountCents": 29000,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2026-09-25T12:00:00.000Z"
+    },
+    {
+      "ref": "INV-10272",
+      "accountRef": "ACC-0032",
+      "description": "Growth plan, monthly (Sep 2026) (duplicate charge)",
+      "amountCents": 9900,
+      "currency": "USD",
+      "status": "paid",
+      "orderedAt": "2026-09-28T12:02:00.000Z"
+    },
+    {
+      "ref": "INV-10273",
+      "accountRef": "ACC-0048",
+      "description": "Scale plan, monthly (Sep 2026) (duplicate charge)",
+      "amountCents": 29900,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2026-09-27T12:02:00.000Z"
+    },
+    {
+      "ref": "INV-10274",
+      "accountRef": "ACC-0024",
+      "description": "Enterprise plan, monthly (Aug 2026) (duplicate charge)",
+      "amountCents": 9999900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-08-29T12:02:00.000Z"
+    },
+    {
+      "ref": "INV-10275",
+      "accountRef": "ACC-0050",
+      "description": "Starter plan, annual (Sep 2026) (duplicate charge)",
+      "amountCents": 29000,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2026-09-25T12:02:00.000Z"
+    },
+    {
+      "ref": "INV-10276",
+      "accountRef": "ACC-0039",
+      "description": "Enterprise plan, monthly (Sep 2026) (duplicate charge)",
+      "amountCents": 120000,
+      "currency": "EUR",
+      "status": "paid",
+      "orderedAt": "2026-09-30T12:02:00.000Z"
+    },
+    {
+      "ref": "INV-10277",
+      "accountRef": "ACC-0019",
+      "description": "Growth plan, monthly (Sep 2026) (duplicate charge)",
+      "amountCents": 799900,
+      "currency": "INR",
+      "status": "paid",
+      "orderedAt": "2026-09-29T12:02:00.000Z"
+    }
+  ]
+}

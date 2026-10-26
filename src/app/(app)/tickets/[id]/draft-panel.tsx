@@ -2,7 +2,7 @@
 
 import { FileText, ShieldAlert, Sparkles } from "lucide-react";
 import { useActionState, useState } from "react";
-import { AiBadge, FormMessage } from "@/components/app-ui";
+import { FormMessage, ModelBadge } from "@/components/app-ui";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,20 +24,14 @@ export interface DraftView {
 export function GenerateDraftButton({
   ticketId,
   hasDraft,
-  aiOn,
+  aiMode,
 }: {
   ticketId: string;
   hasDraft: boolean;
-  aiOn: boolean;
+  aiMode: "claude" | "builtin";
 }) {
   const [state, formAction, pending] = useActionState(generateDraftAction, idleState);
-  if (!aiOn) {
-    return (
-      <p className="text-sm text-muted-foreground">
-        AI drafting is off until a Claude API key is set.
-      </p>
-    );
-  }
+  const builtin = aiMode === "builtin";
   return (
     <form action={formAction} className="flex flex-col gap-2">
       <input type="hidden" name="ticketId" value={ticketId} />
@@ -47,9 +41,20 @@ export function GenerateDraftButton({
         </FormMessage>
       )}
       <Button type="submit" variant={hasDraft ? "outline" : "default"} disabled={pending}>
-        <Sparkles aria-hidden />
-        {pending ? "Drafting… (can take ~30 s)" : hasDraft ? "Draft again" : "Draft a reply"}
+        {builtin ? <FileText aria-hidden /> : <Sparkles aria-hidden />}
+        {pending
+          ? builtin
+            ? "Drafting…"
+            : "Drafting… (can take ~30 s)"
+          : hasDraft
+            ? "Draft again"
+            : "Draft a reply"}
       </Button>
+      {builtin && (
+        <p className="text-xs text-muted-foreground">
+          No AI model is set up, so the draft quotes the best-matching help article from a template.
+        </p>
+      )}
     </form>
   );
 }
@@ -63,7 +68,7 @@ export function DraftReview({ draft, canReview }: { draft: DraftView; canReview:
   return (
     <div className="flex flex-col gap-3 text-sm">
       <div className="flex flex-wrap items-center gap-2">
-        <AiBadge />
+        <ModelBadge model={draft.model} />
         {draft.grounded ? (
           <Badge variant="secondary">From {draft.sources.length} help article section(s)</Badge>
         ) : (
@@ -170,7 +175,11 @@ export function DraftReview({ draft, canReview }: { draft: DraftView; canReview:
         </details>
       )}
       <p className="text-xs text-muted-foreground">
-        Drafted by {draft.model === "none" ? "a fixed template (no AI call)" : draft.model}.
+        Drafted by{" "}
+        {draft.model === "none" || draft.model.startsWith("builtin-")
+          ? "a template (no AI)"
+          : draft.model}
+        .
       </p>
     </div>
   );

@@ -30,7 +30,8 @@ request-time API under Cache Components).
   Address controls by id where Next keeps a previous page mounted (e.g. `#ticket-status`).
 - `npm run db:generate`: create a migration after editing `src/db/schema/*`. Commit the SQL and `drizzle/meta`.
 - `npm run db:migrate`: apply migrations to `DATABASE_URL`
-- `npm run seed:generate` / `seed:load` / `seed:golden`: demo dataset (see `seed/`, `evals/README.md`)
+- `npm run seed:generate` / `seed:templates` (free, no model) / `seed:load` / `seed:golden`: demo dataset (see `seed/`,
+  `evals/README.md`). `npm run eval:triage -- --rules --no-save` scores the free triage.
 
 ## Layout
 
@@ -62,7 +63,8 @@ request-time API under Cache Components).
   with injected `JobServices`). `scripts/worker.mts` runs it.
 - `src/server/ai/`: `redact.ts` (PII -> `[EMAIL_1]` tokens, reversible), `triage.ts` (prompt
   `prompts/triage_v1.md`, Zod output schema, Claude call, routing rules, `triageTicket` job body),
-  `model.ts` (env-configured model). Tests use `tests/ai/mock-triage-model.ts`, never the network.
+  `model.ts` (Claude with a key, else `builtin.ts`: keyword triage + template drafts, labeled Rules / Template,
+  never AI). Tests use `tests/ai/mock-triage-model.ts`, never the network.
 - `src/server/evals/triage-eval.ts` + `evals/run-triage.mts`: golden-set scoring (`npm run eval:triage`, paid).
   A new prompt version gets a new file (`triage_v2.md`) and `TRIAGE_PROMPT_VERSION`; don't edit a measured prompt in place.
 - `tests/api/`: route-handler tests on PGlite with real Better Auth sessions (only `getDb`/`getAuth`/`headers` are swapped).

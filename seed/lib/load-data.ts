@@ -10,6 +10,7 @@ import {
   tickets,
 } from "@/db/schema";
 import type { AnyDatabase } from "@/db/types";
+import { enqueueJob } from "@/server/jobs";
 import { chunkMarkdown } from "@/server/knowledge/chunk";
 import { ensureTenant } from "@/server/tenants";
 import { DEMO_TENANT } from "./demo-tenant";
@@ -28,7 +29,16 @@ const HOUR = 60 * 60 * 1000;
 export async function loadSeedData(
   db: AnyDatabase,
   data: SeedData,
-  { embedPassages, log = () => {} }: { embedPassages: EmbedPassages; log?: (m: string) => void },
+  {
+    embedPassages,
+    log = () => {},
+    queueTriage = false,
+  }: {
+    embedPassages: EmbedPassages;
+    log?: (m: string) => void;
+    /** Queue a triage job per ticket (free with the built-in rules; paid per ticket with Claude). */
+    queueTriage?: boolean;
+  },
 ) {
   const tenant = await ensureTenant(db, DEMO_TENANT);
 
@@ -175,6 +185,13 @@ export async function loadSeedData(
             ]
           : []),
       ]);
+      if (queueTriage) {
+        await enqueueJob(tx, {
+          tenantId: tenant.id,
+          type: "triage_ticket",
+          payload: { ticketId: row.id },
+        });
+      }
     }
 
     return {

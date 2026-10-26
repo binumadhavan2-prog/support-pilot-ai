@@ -1,7 +1,7 @@
 /**
  * Background job worker: runs queued jobs (e.g. triage_ticket) until stopped with Ctrl+C.
- * Triage calls the Claude API (needs ANTHROPIC_API_KEY; each ticket is one paid request). Reply
- * emails go through Resend when RESEND_API_KEY is set.
+ * Triage uses Claude when ANTHROPIC_API_KEY is set (one paid request per ticket), otherwise the
+ * free keyword rules. Reply emails go through Resend when RESEND_API_KEY is set.
  *
  *   npm run jobs:work
  */

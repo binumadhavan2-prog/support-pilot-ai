@@ -63,8 +63,13 @@ test("an agent finds a new ticket, assigns it, replies, and changes its status",
   await expect(page.getByRole("link", { name: subject })).toBeVisible();
 });
 
-test("without a Claude key, drafting is explained instead of offered", async ({ page }) => {
+test("without a Claude key, drafts come from the built-in template, labeled as no AI", async ({
+  page,
+}) => {
   const ticket = await createTicket(page, `[E2E] Draft check ${Date.now()}`);
   await page.goto(`/tickets/${ticket.id}`);
-  await expect(page.getByText("AI drafting is off until a Claude API key is set.")).toBeVisible();
+  await expect(page.getByText(/No AI model is set up/)).toBeVisible();
+  await page.getByRole("button", { name: "Draft a reply" }).click();
+  await expect(page.getByText("Drafted by a template (no AI).")).toBeVisible();
+  await expect(page.getByText("Template", { exact: true })).toBeVisible();
 });

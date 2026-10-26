@@ -26,9 +26,6 @@ export async function generateDraftAction(
       .object({ ticketId: z.string().min(1) })
       .parse(Object.fromEntries(formData));
     const model = getDraftModel();
-    if (!model) {
-      return { status: "error", message: "AI drafting is off: no Claude API key is set." };
-    }
     const result = await generateDraft(
       getDb(),
       { tenantId: user.tenantId, ticketId, userId: user.id },
