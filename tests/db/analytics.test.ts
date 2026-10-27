@@ -197,6 +197,7 @@ describe("getAnalytics", () => {
     expect(a.tickets).toEqual({
       created: 3,
       answered: 2,
+      answeredWithinSla: 2, // t1 urgent at exactly its 1h target, t2 high at 3h of 4h
       resolved: 2, // t1, and t4 (created earlier, resolved inside the window)
       backlog: 3, // t2 pending, t3 and t5 open
       medianFirstResponseHours: 2, // median of 1h and 3h

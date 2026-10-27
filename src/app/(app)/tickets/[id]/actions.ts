@@ -12,7 +12,7 @@ import { getDraftModel } from "@/server/ai/model";
 import { requirePermission } from "@/server/auth/session";
 import { isEmailConfigured } from "@/server/email/mailer";
 import { getEmbedder } from "@/server/knowledge/embedder";
-import { TICKET_STATUSES, addAgentReply, updateTicket } from "@/server/tickets";
+import { TICKET_STATUSES, addAgentReply, addInternalNote, updateTicket } from "@/server/tickets";
 
 /* Server actions are public endpoints: each one checks the caller's permission itself. */
 
@@ -113,9 +113,23 @@ export async function updateTicketAction(
 export async function replyAction(_prev: ActionState, formData: FormData): Promise<ActionState> {
   try {
     const user = await requirePermission("ticket:write");
-    const { ticketId, body } = z
-      .object({ ticketId: z.string().min(1), body: z.string() })
+    const { ticketId, body, kind } = z
+      .object({
+        ticketId: z.string().min(1),
+        body: z.string(),
+        // Enter submits the form without a button value: that means a customer reply.
+        kind: z.enum(["reply", "note"]).default("reply"),
+      })
       .parse(Object.fromEntries(formData));
+    if (kind === "note") {
+      await addInternalNote(
+        getDb(),
+        { tenantId: user.tenantId, ticketId, authorId: user.id },
+        { body },
+      );
+      revalidatePath(`/tickets/${ticketId}`);
+      return { status: "success", message: "Internal note added. The customer won't see it." };
+    }
     const message = await addAgentReply(
       getDb(),
       { tenantId: user.tenantId, ticketId, authorId: user.id },

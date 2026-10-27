@@ -2,6 +2,7 @@ import {
   ArrowLeft,
   Clock,
   ListChecks,
+  Lock,
   MailCheck,
   MailMinus,
   MailX,
@@ -17,6 +18,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { SlaLine } from "@/components/sla";
 import { getDb } from "@/db/client";
 import { isAppError } from "@/lib/errors";
 import { formatDateTime, humanize } from "@/lib/format";
@@ -25,6 +27,7 @@ import { getLatestDraft } from "@/server/ai/drafts";
 import { aiMode } from "@/server/ai/model";
 import { can } from "@/server/auth/permissions";
 import { requirePagePermission } from "@/server/auth/session";
+import { ticketSla } from "@/server/sla";
 import { getTicket, listAssignableUsers } from "@/server/tickets";
 import { DraftReview, GenerateDraftButton, type DraftView } from "./draft-panel";
 import { ReplyForm, TicketControls } from "./ticket-controls";
@@ -73,10 +76,14 @@ async function Content({ params }: Pick<PageProps<"/tickets/[id]">, "params">) {
     sources: latest.sources,
   };
   const mode = aiMode();
-  const rulesTriage = ticket.triage?.model.startsWith("builtin-") ?? false;
+  // Before triage runs, the title follows the mode that will run it.
+  const rulesTriage = ticket.triage
+    ? ticket.triage.model.startsWith("builtin-")
+    : mode === "builtin";
   const canWrite = can(user.role, "ticket:write");
   const assignees = await listAssignableUsers(getDb(), user.tenantId);
   const assigneeName = assignees.find((a) => a.id === ticket.assigneeId)?.name;
+  const sla = ticketSla(ticket, new Date());
 
   return (
     <>
@@ -120,7 +127,11 @@ async function Content({ params }: Pick<PageProps<"/tickets/[id]">, "params">) {
               key={m.id}
               className={cn(
                 "rounded-xl border p-4",
-                m.authorType === "customer" ? "bg-card" : "bg-muted/50",
+                m.internal
+                  ? "border-dashed bg-background"
+                  : m.authorType === "customer"
+                    ? "bg-card"
+                    : "bg-muted/50",
               )}
             >
               <header className="mb-2 flex items-center justify-between gap-2 text-sm">
@@ -128,6 +139,12 @@ async function Content({ params }: Pick<PageProps<"/tickets/[id]">, "params">) {
                   {m.authorType === "customer"
                     ? ticket.customerName
                     : (m.authorName ?? humanize(m.authorType))}
+                  {m.internal && (
+                    <Badge variant="secondary" className="gap-1">
+                      <Lock aria-hidden />
+                      Internal note
+                    </Badge>
+                  )}
                   {m.sourceDraftId && (
                     <Badge variant="outline" className="text-muted-foreground">
                       AI-assisted, approved by agent
@@ -189,6 +206,11 @@ async function Content({ params }: Pick<PageProps<"/tickets/[id]">, "params">) {
                   <dd>{assigneeName ?? "Unassigned"}</dd>
                 </dl>
               )}
+              <div className="mt-4 flex flex-col gap-2 border-t pt-4">
+                <h2 className="text-sm font-medium">Service level</h2>
+                <SlaLine label="First response" clock={sla.firstResponse} />
+                <SlaLine label="Resolution" clock={sla.resolution} />
+              </div>
             </CardContent>
           </Card>
           <Card>

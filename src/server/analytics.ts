@@ -2,6 +2,7 @@ import { and, count, desc, eq, gte, inArray, isNotNull, sql } from "drizzle-orm"
 import { aiDrafts, kbQueries, tickets, triageResults, user } from "@/db/schema";
 import { ticketCategory, ticketPriority, ticketStatus } from "@/db/schema/enums";
 import type { AnyDatabase } from "@/db/types";
+import { firstResponseMetSql } from "./sla";
 
 export const ANALYTICS_RANGES = [7, 30, 90] as const;
 export type AnalyticsRange = (typeof ANALYTICS_RANGES)[number];
@@ -39,6 +40,8 @@ export async function getAnalytics(
         number | null
       >`percentile_cont(0.5) within group (order by extract(epoch from ${tickets.firstResponseAt} - ${tickets.createdAt}) / 3600) filter (where ${tickets.firstResponseAt} is not null)`,
       answered: sql<number>`count(*) filter (where ${tickets.firstResponseAt} is not null)`,
+      // First replies that came within the SLA target for the ticket's priority (src/server/sla.ts).
+      answeredWithinSla: sql<number>`count(*) filter (where ${firstResponseMetSql})`,
     })
     .from(tickets)
     .where(and(mine, gte(tickets.createdAt, since)));
@@ -162,6 +165,7 @@ export async function getAnalytics(
     tickets: {
       created: Number(created.total),
       answered: Number(created.answered),
+      answeredWithinSla: Number(created.answeredWithinSla),
       resolved: Number(resolved.total),
       backlog: Number(backlog.total),
       medianFirstResponseHours: num(created.medianFirstResponseH),

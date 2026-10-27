@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { Skeleton } from "@/components/ui/skeleton";
+import { SlaBadge } from "@/components/sla";
 import {
   Table,
   TableBody,
@@ -28,6 +29,7 @@ import {
 import { getDb } from "@/db/client";
 import { formatAge, formatDateTime, humanize } from "@/lib/format";
 import { requirePagePermission } from "@/server/auth/session";
+import { ticketSla, urgentClock } from "@/server/sla";
 import {
   TICKET_CATEGORIES,
   TICKET_PRIORITIES,
@@ -59,7 +61,7 @@ async function Content({ searchParams }: Pick<PageProps<"/inbox">, "searchParams
   const result = await listTickets(getDb(), user.tenantId, query, { viewerId: user.id });
   const now = new Date();
   const filtered = Boolean(
-    query.status || query.priority || query.category || query.search || query.assignee,
+    query.status || query.priority || query.category || query.search || query.assignee || query.sla,
   );
 
   return (
@@ -99,6 +101,7 @@ async function Content({ searchParams }: Pick<PageProps<"/inbox">, "searchParams
                   </Link>
                   <div className="flex items-center gap-2 text-xs text-muted-foreground">
                     #{t.number}
+                    <SlaBadge clock={urgentClock(ticketSla(t, now))} />
                     {t.isDemo && <DemoBadge />}
                     {t.injectionFlagged && (
                       <Badge variant="destructive" title="AI flagged a prompt-injection attempt">
@@ -147,6 +150,7 @@ function Filters({ query }: { query: ListTicketsQuery }) {
     { name: "status", label: "Status", values: TICKET_STATUSES, value: query.status },
     { name: "priority", label: "Priority", values: TICKET_PRIORITIES, value: query.priority },
     { name: "category", label: "Category", values: TICKET_CATEGORIES, value: query.category },
+    { name: "sla", label: "SLA", values: ["overdue", "at_risk"] as const, value: query.sla },
   ];
   const optionLabel = (name: string, v: string) =>
     name === "priority"
@@ -204,7 +208,7 @@ function Pagination({
 }) {
   const hrefFor = (page: number) => {
     const params = new URLSearchParams();
-    for (const key of ["search", "assignee", "status", "priority", "category"] as const) {
+    for (const key of ["search", "assignee", "status", "priority", "category", "sla"] as const) {
       const value = query[key];
       if (value) params.set(key, value);
     }

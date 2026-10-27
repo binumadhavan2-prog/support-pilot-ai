@@ -1,0 +1,1 @@
+ALTER TABLE "ticket_messages" ADD COLUMN "internal" boolean DEFAULT false NOT NULL;

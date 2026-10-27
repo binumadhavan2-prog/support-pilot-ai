@@ -84,7 +84,7 @@ async function Content({ searchParams }: Pick<PageProps<"/analytics">, "searchPa
         <StatTile
           label="Median first response"
           value={duration(a.tickets.medianFirstResponseHours)}
-          detail={`${a.tickets.answered} of ${a.tickets.created} answered`}
+          detail={`${a.tickets.answered} of ${a.tickets.created} answered · ${pct(a.tickets.answeredWithinSla, a.tickets.answered)} within SLA`}
         />
         <StatTile
           label="Median time to resolve"

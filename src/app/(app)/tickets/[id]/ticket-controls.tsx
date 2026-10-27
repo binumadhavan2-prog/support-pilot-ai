@@ -120,14 +120,14 @@ export function ReplyForm({ ticketId }: { ticketId: string }) {
   return (
     <form ref={formRef} action={formAction} className="flex flex-col gap-2 rounded-xl border p-4">
       <input type="hidden" name="ticketId" value={ticketId} />
-      <Label htmlFor="reply-body">Reply</Label>
+      <Label htmlFor="reply-body">Reply or internal note</Label>
       <textarea
         id="reply-body"
         name="body"
         rows={5}
         maxLength={50_000}
         required
-        placeholder="Write your reply to the customer…"
+        placeholder="Write a reply to the customer, or a note for your team…"
         className="w-full rounded-lg border border-input bg-transparent p-3 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30"
       />
       {state.message && (
@@ -137,11 +137,16 @@ export function ReplyForm({ ticketId }: { ticketId: string }) {
       )}
       <div className="flex items-center justify-between gap-2">
         <p className="text-xs text-muted-foreground">
-          Added to the conversation, and emailed to the customer when email is set up.
+          Replies are emailed to the customer when email is set up. Notes stay inside the team.
         </p>
-        <Button type="submit" disabled={pending}>
-          {pending ? "Adding…" : "Add reply"}
-        </Button>
+        <div className="flex shrink-0 gap-2">
+          <Button type="submit" name="kind" value="note" variant="outline" disabled={pending}>
+            Add internal note
+          </Button>
+          <Button type="submit" name="kind" value="reply" disabled={pending}>
+            {pending ? "Adding…" : "Add reply"}
+          </Button>
+        </div>
       </div>
     </form>
   );

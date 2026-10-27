@@ -60,6 +60,8 @@ request-time API under Cache Components).
 - `src/server/incidents.ts`: list / get / create / update incidents, link tickets by number (`incident:manage`).
 - `src/server/tickets.ts`: create (ticket + message + audit + triage job in one transaction), list, get.
   `src/server/api-keys.ts` + `src/server/auth/api-auth.ts`: Bearer API keys, `requireApiPermission` for `/api/tickets/**`.
+- `src/server/sla.ts`: SLA targets by priority and the clocks, in TS (`ticketSla`) and SQL (`slaOverdueSql`, ...);
+  keep both in sync. Internal notes are `ticket_messages.internal` (`addInternalNote` in `tickets.ts`).
 - `src/server/jobs.ts`: Postgres job queue (`enqueueJob` inside the caller's transaction, `processNextJob`
   with injected `JobServices`). `scripts/worker.mts` runs it.
 - `src/server/ai/`: `redact.ts` (PII -> `[EMAIL_1]` tokens, reversible), `triage.ts` (prompt

@@ -2,15 +2,20 @@ import { connection } from "next/server";
 import { getDb } from "@/db/client";
 import { parseJsonBody, withApiHandler } from "@/lib/api/handler";
 import { requireApiPermission } from "@/server/auth/api-auth";
+import { ticketSla } from "@/server/sla";
 import { getTicket, updateTicket, updateTicketSchema } from "@/server/tickets";
 
-/** GET /api/tickets/{id}: the ticket and its conversation. */
+/**
+ * GET /api/tickets/{id}: the ticket, its conversation (internal notes carry `internal: true`) and
+ * its SLA clocks at the time of the request.
+ */
 export const GET = withApiHandler<{ id: string }>(async (request, { params }) => {
   await connection();
   const db = getDb();
   const { tenantId } = await requireApiPermission(db, request, "ticket:read");
+  const ticket = await getTicket(db, tenantId, params.id);
   return Response.json(
-    { ticket: await getTicket(db, tenantId, params.id) },
+    { ticket, sla: ticketSla(ticket, new Date()) },
     { headers: { "cache-control": "no-store" } },
   );
 });

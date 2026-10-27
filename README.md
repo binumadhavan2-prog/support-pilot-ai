@@ -257,6 +257,29 @@ open ticket to `pending`. Tickets can be assigned to active agents and admins of
 tenant. Every change is audited (`ticket.updated` with before/after values, `ticket.replied`).
 The inbox filters by assignee (Me / Unassigned) and shows who owns each ticket.
 
+**SLA timers** (`src/server/sla.ts`). Every ticket has two clocks, set by its priority:
+
+| Priority | First response | Resolution |
+| -------- | -------------- | ---------- |
+| Urgent   | 1 h            | 8 h        |
+| High     | 4 h            | 24 h       |
+| Normal   | 8 h            | 72 h       |
+| Low      | 24 h           | 7 days     |
+
+A clock is on track, at risk (in its last quarter), breached, or stops as met / missed when the
+first reply is sent or the ticket is resolved. The ticket page shows both clocks; the inbox badges
+overdue and at-risk tickets and filters by them (`?sla=overdue`, `?sla=at_risk`), with the same
+rules written once in TypeScript and once in SQL (tests check they agree). Analytics shows the share
+of first replies within target, and `GET /api/tickets/{id}` returns the clocks. They are computed
+when read, never stored, so changing a target needs no migration. Clocks run in calendar hours
+from creation: no business hours, and no pause while a ticket waits on the customer.
+
+**Internal notes.** Agents and admins can add a note instead of a reply. Notes are shown to staff
+with an **Internal note** label and are never emailed, never count as the first response, never
+change the status and never reach a model (triage and drafts read customer messages only). The
+audit row (`ticket.note_added`) records the note's length, not its text. The ticket API returns
+notes with `internal: true`.
+
 **Auth.** Integrations send `Authorization: Bearer <key>`. Keys belong to one tenant, are created
 with `npm run api-key:create` and are stored only as a SHA-256 hash. Without that header, the
 session cookie and normal role checks apply. A bad key is rejected (401), never retried as the
@@ -435,13 +458,13 @@ Embeddings need no key: the model (~130 MB) downloads from Hugging Face on first
 - **API and AI integration:** the real route handlers with real Better Auth sessions (tickets,
   email intake, PATCH, idempotency, size limits, rate limits, tenant isolation), triage, the
   knowledge base, draft replies and analytics, all on PGlite with MOCK models and embedder.
-- **E2E (Playwright, `npm run test:e2e`):** 20 browser tests against the running app, using the
+- **E2E (Playwright, `npm run test:e2e`):** 21 browser tests against the running app, using the
   installed Microsoft Edge (no browser download). Sign-in (form, wrong password, Try as Guest,
   redirects), role restrictions, security headers, an agent's ticket workflow (search, assign
   to me, reply, resolve, the "Mine" filter), incidents (create, link a ticket, resolve; viewers
   can't edit), the knowledge base (upload, duplicate rejected,
   English and Hinglish search, delete, PDF and Word uploads; viewers can't upload) and analytics (tiles, chart hover,
-  table view, range switch), the theme toggle, and the password-reset and verification pages. Start the app first (`npm run build && npm run start`, demo
+  table view, range switch), the theme toggle, the password-reset and verification pages, and SLA clocks with internal notes. Start the app first (`npm run build && npm run start`, demo
   accounts seeded). Tests run one at a time, reuse saved sessions (the app allows 5 sign-ins
   per minute), and label everything they create "[E2E]"; created tickets stay in the database.
 
@@ -518,7 +541,9 @@ Docker instead. The build needs no secrets, startup validates the environment, a
   relies on service-layer filtering plus composite foreign keys.
 
 - Incidents are created and linked by hand; there is no AI incident summary or automatic
-  grouping yet. There are no internal notes, ticket merging or SLA timers either.
+  grouping yet. There is no ticket merging either.
+- SLA clocks use calendar hours and don't pause while waiting on the customer, and the targets
+  are the same for every tenant (per-plan or per-tenant targets would be the next step).
 - Analytics days are UTC days (there is no per-tenant time zone yet), and the LLM-judge answer
   evaluation from Phase 6 is not built. Charts use the validated dataviz reference palette
   (`--viz-*` tokens in `globals.css`); every mark carries a visible value label.

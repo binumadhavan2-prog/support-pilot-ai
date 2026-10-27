@@ -7,6 +7,7 @@ import { AppError } from "@/lib/errors";
 import { recordAudit } from "./audit";
 import { planReplyEmail, queueReplyEmail } from "./email/outbound";
 import { enqueueJob } from "./jobs";
+import { slaAtRiskSql, slaOverdueSql } from "./sla";
 
 export const TICKET_STATUSES = ticketStatus.enumValues;
 export const TICKET_PRIORITIES = ticketPriority.enumValues;
@@ -123,6 +124,7 @@ export const listTicketsQuerySchema = z.object({
   status: z.enum(TICKET_STATUSES).optional(),
   priority: z.enum(TICKET_PRIORITIES).optional(),
   category: z.enum(TICKET_CATEGORIES).optional(),
+  sla: z.enum(["overdue", "at_risk"]).optional(),
   search: z.string().trim().max(200).optional(),
   // "me", "unassigned", or a user id.
   assignee: z.string().trim().max(64).optional(),
@@ -157,6 +159,8 @@ export async function listTickets(
   else if (query.assignee) conditions.push(eq(tickets.assigneeId, query.assignee));
   if (query.priority) conditions.push(eq(tickets.priority, query.priority));
   if (query.category) conditions.push(eq(tickets.category, query.category));
+  if (query.sla === "overdue") conditions.push(slaOverdueSql);
+  if (query.sla === "at_risk") conditions.push(slaAtRiskSql);
   if (query.search) {
     const pattern = likePattern(query.search);
     const matches = [
@@ -187,6 +191,8 @@ export async function listTickets(
         assigneeId: tickets.assigneeId,
         assigneeName: user.name,
         isDemo: tickets.externalRef,
+        firstResponseAt: tickets.firstResponseAt,
+        resolvedAt: tickets.resolvedAt,
         createdAt: tickets.createdAt,
       })
       .from(tickets)
@@ -232,6 +238,7 @@ export async function getTicket(db: AnyDatabase, tenantId: string, ticketId: str
       authorName: user.name,
       body: ticketMessages.body,
       sourceDraftId: ticketMessages.sourceDraftId,
+      internal: ticketMessages.internal,
       emailStatus: ticketMessages.emailStatus,
       emailDetail: ticketMessages.emailDetail,
       emailSentAt: ticketMessages.emailSentAt,
@@ -432,5 +439,43 @@ export async function addAgentReply(
       tx,
     );
     return message;
+  });
+}
+
+/**
+ * A note for the team, never the customer: it is not emailed, doesn't count as the first
+ * response, doesn't change the status, and is never sent to a model. The audit row records its
+ * length only, not the text.
+ */
+export async function addInternalNote(
+  db: AnyDatabase,
+  { tenantId, ticketId, authorId }: { tenantId: string; ticketId: string; authorId: string },
+  input: { body: string },
+) {
+  const { body } = replySchema.parse(input);
+  if (!ticketIdSchema.safeParse(ticketId).success)
+    throw new AppError("NOT_FOUND", "Ticket not found");
+  return db.transaction(async (tx) => {
+    const [ticket] = await tx
+      .select({ id: tickets.id })
+      .from(tickets)
+      .where(and(eq(tickets.id, ticketId), eq(tickets.tenantId, tenantId)));
+    if (!ticket) throw new AppError("NOT_FOUND", "Ticket not found");
+    const [note] = await tx
+      .insert(ticketMessages)
+      .values({ tenantId, ticketId, authorType: "agent", authorId, body, internal: true })
+      .returning({ id: ticketMessages.id });
+    await recordAudit(
+      {
+        tenantId,
+        actorId: authorId,
+        action: "ticket.note_added",
+        entityType: "ticket",
+        entityId: ticketId,
+        metadata: { messageId: note.id, length: body.length },
+      },
+      tx,
+    );
+    return note;
   });
 }

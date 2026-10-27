@@ -118,6 +118,9 @@ export const ticketMessages = pgTable(
     // Message-ID of the inbound email this message came from, so a provider's retried delivery of
     // a customer reply is added once. Unique per tenant (NULLs, i.e. other messages, don't clash).
     inboundMessageId: text("inbound_message_id"),
+    // Internal note: visible to staff only. Never emailed, never a first response, never sent to
+    // a model (triage and drafts read customer messages only).
+    internal: boolean("internal").notNull().default(false),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (t) => [
