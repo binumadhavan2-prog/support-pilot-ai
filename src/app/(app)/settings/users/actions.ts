@@ -7,7 +7,11 @@ import { toActionError } from "@/server/action-error";
 import { clientIp, recordAudit } from "@/server/audit";
 import { getDb } from "@/db/client";
 import { getAuth } from "@/server/auth/auth";
+import { sendEmailVerification } from "@/server/auth/account-email";
 import { requirePermission } from "@/server/auth/session";
+import { isEmailConfigured } from "@/server/email/mailer";
+import { isReservedAddress } from "@/server/email/outbound";
+import { logger } from "@/lib/logger";
 import { assertUserInTenant } from "@/server/tenants";
 import {
   assertNotSelfLockout,
@@ -51,8 +55,25 @@ export async function createUserAction(
       metadata: { role: input.role },
       ipAddress: clientIp(requestHeaders),
     });
+    // Ask the new user to confirm their address. A failure here must not undo the account.
+    let verification = "";
+    if (isEmailConfigured() && !isReservedAddress(user.email)) {
+      try {
+        await sendEmailVerification(getAuth(), getDb(), {
+          userId: user.id,
+          email: user.email,
+          headers: requestHeaders,
+        });
+        verification = " A verification email is on its way.";
+      } catch (error) {
+        logger.warn({ err: error, userId: user.id }, "verification email not sent");
+      }
+    }
     revalidatePath("/settings/users");
-    return { status: "success", message: `Created ${input.email} as ${input.role}.` };
+    return {
+      status: "success",
+      message: `Created ${input.email} as ${input.role}.${verification}`,
+    };
   } catch (error) {
     return toActionError(error, "createUser");
   }

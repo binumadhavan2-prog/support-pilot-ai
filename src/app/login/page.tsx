@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
+import { FormMessage } from "@/components/app-ui";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { getEnv } from "@/env";
@@ -33,11 +35,20 @@ export default function LoginPage({ searchParams }: PageProps<"/login">) {
 /** Reads the session at request time (inside Suspense, as Cache Components requires). */
 async function LoginGate({ searchParams }: Pick<PageProps<"/login">, "searchParams">) {
   if (await getCurrentUser()) redirect("/inbox");
-  const { next } = await searchParams;
+  const { next, reset } = await searchParams;
   const nextPath = typeof next === "string" ? next : undefined;
   return (
     <div className="flex flex-col gap-4">
+      {reset === "1" && (
+        <FormMessage tone="success">Password changed. Sign in with your new password.</FormMessage>
+      )}
       <LoginForm next={nextPath} />
+      <Link
+        href="/forgot-password"
+        className="-mt-1 text-center text-sm text-muted-foreground hover:text-foreground"
+      >
+        Forgot password?
+      </Link>
       {getEnv().DEMO_USER_PASSWORD && (
         <>
           <div className="flex items-center gap-3 text-xs text-muted-foreground">

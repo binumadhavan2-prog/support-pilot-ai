@@ -106,6 +106,17 @@ export function ModelBadge({ model }: { model: string }) {
   );
 }
 
+/** Whether the account's email address was confirmed through the emailed link. */
+export function VerifiedBadge({ verified }: { verified: boolean }) {
+  return verified ? (
+    <Badge variant="secondary">Verified</Badge>
+  ) : (
+    <Badge variant="outline" className="text-muted-foreground">
+      Not verified
+    </Badge>
+  );
+}
+
 export function StatusBadge({ status }: { status: string }) {
   return (
     <Badge variant="outline" className="capitalize">

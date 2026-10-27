@@ -10,6 +10,9 @@ import { getDb } from "@/db/client";
 import * as schema from "@/db/schema";
 import type { AnyDatabase } from "@/db/types";
 import { getEnv } from "@/env";
+import { recordAudit } from "../audit";
+import { sendAuthEmail } from "../email/auth-emails";
+import { getMailer, type Mailer } from "../email/mailer";
 import { authRateLimitStorage } from "../rate-limit";
 
 import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from "./constants";
@@ -34,7 +37,16 @@ interface CreateAuthOptions {
   production: boolean;
   /** Next.js cookie bridge for server actions. Off for scripts and tests that run outside Next. */
   withNextCookies?: boolean;
+  /** Sends password-reset and verification emails; null when email is not configured. */
+  mailer?: Mailer | null;
 }
+
+/** Link to the app's own reset page (the token is single-use and expires after an hour). */
+export function passwordResetUrl(baseURL: string, token: string) {
+  return `${baseURL}/reset-password?token=${encodeURIComponent(token)}`;
+}
+
+type AuthUser = { id: string; email: string; name: string; tenantId?: unknown };
 
 /** Factory so integration tests can build an instance on an in-memory database. */
 export function createAuth({
@@ -43,7 +55,22 @@ export function createAuth({
   baseURL,
   production,
   withNextCookies = true,
+  mailer = null,
 }: CreateAuthOptions) {
+  const audit = (user: AuthUser, action: string) =>
+    typeof user.tenantId === "string"
+      ? recordAudit(
+          {
+            tenantId: user.tenantId,
+            actorId: user.id,
+            action,
+            entityType: "user",
+            entityId: user.id,
+          },
+          db,
+        )
+      : Promise.resolve();
+
   return betterAuth({
     appName: "Support Pilot AI",
     secret,
@@ -55,6 +82,29 @@ export function createAuth({
       disableSignUp: true,
       minPasswordLength: MIN_PASSWORD_LENGTH,
       maxPasswordLength: MAX_PASSWORD_LENGTH,
+      // Not required to sign in: accounts are admin-created, and requiring it would lock out
+      // existing and demo users. Verification is shown to admins instead.
+      requireEmailVerification: false,
+      resetPasswordTokenExpiresIn: 60 * 60,
+      // A reset means the old password may be known to someone else: end every session.
+      revokeSessionsOnPasswordReset: true,
+      sendResetPassword: async ({ user, token }) => {
+        // Not awaited, so the response time doesn't reveal whether the account exists.
+        void sendAuthEmail(mailer, "password_reset", user, passwordResetUrl(baseURL, token));
+      },
+      onPasswordReset: async ({ user }) => {
+        await audit(user as AuthUser, "auth.password_reset");
+      },
+    },
+    emailVerification: {
+      sendVerificationEmail: async ({ user, url }) => {
+        void sendAuthEmail(mailer, "email_verification", user, url);
+      },
+      expiresIn: 60 * 60 * 24,
+      autoSignInAfterVerification: false,
+      afterEmailVerification: async (user) => {
+        await audit(user as AuthUser, "auth.email_verified");
+      },
     },
     user: {
       additionalFields: {
@@ -125,6 +175,7 @@ export function getAuth(): Auth {
       secret: env.BETTER_AUTH_SECRET,
       baseURL: env.BETTER_AUTH_URL,
       production: env.NODE_ENV === "production",
+      mailer: getMailer(),
     });
   }
   return globalForAuth.__auth;

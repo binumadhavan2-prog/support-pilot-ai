@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { PageHeader, RoleBadge } from "@/components/app-ui";
+import { PageHeader, RoleBadge, VerifiedBadge } from "@/components/app-ui";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -75,7 +75,10 @@ async function UsersContent() {
                         <span className="ml-2 text-xs text-muted-foreground">(you)</span>
                       )}
                     </div>
-                    <div className="text-muted-foreground">{u.email}</div>
+                    <div className="flex flex-wrap items-center gap-1.5 text-muted-foreground">
+                      {u.email}
+                      <VerifiedBadge verified={u.emailVerified} />
+                    </div>
                   </TableCell>
                   <TableCell>
                     <RoleBadge role={role} />

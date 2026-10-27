@@ -27,6 +27,7 @@ export async function listTenantUsers(db: AnyDatabase, tenantId: string) {
       id: user.id,
       name: user.name,
       email: user.email,
+      emailVerified: user.emailVerified,
       role: user.role,
       banned: user.banned,
       createdAt: user.createdAt,

@@ -61,7 +61,7 @@ that has already been applied.
 | `MODEL_CACHE_DIR`    | `/tmp/transformers`                                                         |
 | `ANTHROPIC_API_KEY`  | Optional. Turns on cited answers and draft replies                          |
 | `DEMO_USER_PASSWORD` | Optional, demo deployments only. Shows "Try as Guest"                       |
-| `RESEND_API_KEY`     | Optional. Emails agent replies to customers (sent by the worker)            |
+| `RESEND_API_KEY`     | Optional. Reply emails (sent by the worker), password reset, verification   |
 | `EMAIL_FROM`         | Required with `RESEND_API_KEY`, on a domain verified in Resend              |
 
 3. Deploy, then open `https://<your-domain>/api/health`. It should return

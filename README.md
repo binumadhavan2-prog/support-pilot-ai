@@ -79,6 +79,21 @@ reject any row that links two tenants. Tests try each cross-tenant link and expe
 [Better Auth](https://better-auth.com) with email and password, database sessions (7 days), and
 its admin plugin for user management. **Self sign-up is disabled**: an admin creates every account.
 
+**Password reset and email verification** (`src/server/auth/account-email.ts`), sent through
+Resend when `RESEND_API_KEY` is set:
+
+- **Forgot password?** on the sign-in page emails a single-use link to `/reset-password`, valid
+  for 1 hour. Setting the new password signs the user out of every session and writes
+  `auth.password_reset` to the audit log. The response is the same whether or not the account
+  exists, and requests are limited per IP (10) and per email (3, stored hashed) every 15 minutes.
+- **Email verification:** a new user gets a confirmation link (valid 24 hours) when an admin
+  creates them, and can resend it from Settings (3 an hour). Settings and the user list show
+  **Verified** / **Not verified**; confirming writes `auth.email_verified`. Verification is not
+  required to sign in, because accounts are admin-created and existing or demo users would be
+  locked out.
+- Links carry tokens, so they are never logged. Reserved test addresses (all demo accounts) are
+  never emailed. Without a key, the forgot-password page says to ask an admin instead.
+
 | Role     | Can                                                                     |
 | -------- | ----------------------------------------------------------------------- |
 | `admin`  | Everything, including users, documents, evals and the audit log         |
@@ -299,6 +314,8 @@ See `seed/` and `evals/README.md`.
 **Local dev database (no account):** a small companion project, `support-pilot-devdb` (kept
 next to this repo, not in it), runs PGlite with pgvector over the Postgres protocol on `127.0.0.1:54322`. Point the app at it with
 `DATABASE_URL=postgres://postgres:postgres@127.0.0.1:54322/postgres` and `DATABASE_POOL_MAX=1`.
+If another program holds that port (a VPN client can), start it with `DEVDB_PORT=54332 npm start`
+and use that port in `DATABASE_URL`.
 
 - `npm start` / `npm run stop` there. **Always stop it with `npm run stop` (or Ctrl+C)**, never
   Task Manager: PGlite's files are only consistent after a clean shutdown, and a hard kill can
@@ -337,22 +354,22 @@ transaction pooler (port 6543) works for the app, because the client disables pr
 All variables are server-only and validated with Zod at startup (`src/env.ts`). The server exits
 with a clear message if any are invalid. Error messages name the variable but never echo its value.
 
-| Variable             | Required   | Notes                                                        |
-| -------------------- | ---------- | ------------------------------------------------------------ |
-| `DATABASE_URL`       | Yes        | `postgres://` or `postgresql://`                             |
-| `DATABASE_POOL_MAX`  | No         | App connection pool size (default 10; 1 for local PGlite)    |
-| `LOG_LEVEL`          | No         | `debug` / `info` / `warn` / `error`                          |
-| `BETTER_AUTH_SECRET` | Yes        | 32+ characters; signs session cookies                        |
-| `BETTER_AUTH_URL`    | Production | Public base URL; defaults to localhost:3000 in dev           |
-| `ANTHROPIC_API_KEY`  | No         | Claude for AI features; without it, free built-in mode       |
-| `SEED_MODEL`         | No         | Model for `seed:generate` (default `claude-sonnet-5-5`)      |
-| `TRIAGE_MODEL`       | No         | Model for triage and its eval (default `claude-opus-5-5`)    |
-| `ANSWER_MODEL`       | No         | Model for knowledge-base answers (default `claude-opus-5-5`) |
-| `SEMANTIC_SEARCH`    | No         | `off` = keyword search only, no local model (saves memory)   |
-| `MODEL_CACHE_DIR`    | No         | Absolute path for the embedding model (default `.cache/`)    |
-| `DEMO_USER_PASSWORD` | No         | Demo accounts' password; enables "Try as Guest"              |
-| `RESEND_API_KEY`     | No         | Emails agent replies to customers (needs `EMAIL_FROM`)       |
-| `EMAIL_FROM`         | With key   | Sender, e.g. `Acme Support <support@acme.com>`               |
+| Variable             | Required   | Notes                                                              |
+| -------------------- | ---------- | ------------------------------------------------------------------ |
+| `DATABASE_URL`       | Yes        | `postgres://` or `postgresql://`                                   |
+| `DATABASE_POOL_MAX`  | No         | App connection pool size (default 10; 1 for local PGlite)          |
+| `LOG_LEVEL`          | No         | `debug` / `info` / `warn` / `error`                                |
+| `BETTER_AUTH_SECRET` | Yes        | 32+ characters; signs session cookies                              |
+| `BETTER_AUTH_URL`    | Production | Public base URL; defaults to localhost:3000 in dev                 |
+| `ANTHROPIC_API_KEY`  | No         | Claude for AI features; without it, free built-in mode             |
+| `SEED_MODEL`         | No         | Model for `seed:generate` (default `claude-sonnet-5-5`)            |
+| `TRIAGE_MODEL`       | No         | Model for triage and its eval (default `claude-opus-5-5`)          |
+| `ANSWER_MODEL`       | No         | Model for knowledge-base answers (default `claude-opus-5-5`)       |
+| `SEMANTIC_SEARCH`    | No         | `off` = keyword search only, no local model (saves memory)         |
+| `MODEL_CACHE_DIR`    | No         | Absolute path for the embedding model (default `.cache/`)          |
+| `DEMO_USER_PASSWORD` | No         | Demo accounts' password; enables "Try as Guest"                    |
+| `RESEND_API_KEY`     | No         | Reply, password-reset and verification emails (needs `EMAIL_FROM`) |
+| `EMAIL_FROM`         | With key   | Sender, e.g. `Acme Support <support@acme.com>`                     |
 
 Embeddings need no key: the model (~130 MB) downloads from Hugging Face on first use into
 `.cache/transformers` (git-ignored). Downloads retry, because the CDN can be slow to connect.
@@ -411,13 +428,13 @@ Embeddings need no key: the model (~130 MB) downloads from Hugging Face on first
 - **API and AI integration:** the real route handlers with real Better Auth sessions (tickets,
   email intake, PATCH, idempotency, size limits, rate limits, tenant isolation), triage, the
   knowledge base, draft replies and analytics, all on PGlite with MOCK models and embedder.
-- **E2E (Playwright, `npm run test:e2e`):** 16 browser tests against the running app, using the
+- **E2E (Playwright, `npm run test:e2e`):** 20 browser tests against the running app, using the
   installed Microsoft Edge (no browser download). Sign-in (form, wrong password, Try as Guest,
   redirects), role restrictions, security headers, an agent's ticket workflow (search, assign
   to me, reply, resolve, the "Mine" filter), incidents (create, link a ticket, resolve; viewers
   can't edit), the knowledge base (upload, duplicate rejected,
   English and Hinglish search, delete, PDF and Word uploads; viewers can't upload) and analytics (tiles, chart hover,
-  table view, range switch) and the theme toggle. Start the app first (`npm run build && npm run start`, demo
+  table view, range switch), the theme toggle, and the password-reset and verification pages. Start the app first (`npm run build && npm run start`, demo
   accounts seeded). Tests run one at a time, reuse saved sessions (the app allows 5 sign-ins
   per minute), and label everything they create "[E2E]"; created tickets stay in the database.
 
@@ -520,8 +537,8 @@ Docker instead. The build needs no secrets, startup validates the environment, a
   same-origin only.
 - Inbox search uses `ILIKE` substring matching (wildcards escaped), which scans the tenant's rows.
   Fine at demo scale; larger tenants would want the full-text index in Phase 4's search work.
-- No password reset or email verification yet (Resend could send them, but the flows are not
-  built). Admins set initial passwords.
+- Password reset and email verification need `RESEND_API_KEY`; they are tested with a mock mailer
+  only. Admins still set initial passwords.
 - Integration tests use PGlite (Postgres compiled to WASM). It runs real Postgres SQL and pgvector,
   but there has been no test run against a hosted Postgres yet.
 - `npm audit` reports 5 high-severity advisories in `braces`, pulled in only by dev tooling

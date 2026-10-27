@@ -46,7 +46,8 @@ request-time API under Cache Components).
 - `src/lib/logger.ts`: pino logger with secret redaction.
 - `src/server/*`: services holding business logic. Route handlers and server actions stay thin.
 - `src/server/auth/`: `permissions.ts` (the RBAC matrix, pure), `auth.ts` (Better Auth config, `createAuth`/`getAuth`),
-  `session.ts` (data access layer: `requirePermission` for actions and APIs, `requirePagePermission` for pages).
+  `session.ts` (data access layer: `requirePermission` for actions and APIs, `requirePagePermission` for pages),
+  `account-email.ts` (password reset + email verification, rate limited; emails via `email/auth-emails.ts`).
 - `src/proxy.ts`: optimistic cookie-presence redirect only. Never rely on it for authorization. Add new signed-in routes to its matcher.
 - `src/components/ui/*`: shadcn/ui components (add with `npx shadcn@latest add <name>`). Local edits are marked
   with a "Local change" comment; keep them when re-adding. `src/hooks/use-mobile.ts` is also locally rewritten.

@@ -12,6 +12,8 @@ export interface CurrentUser {
   name: string;
   email: string;
   role: Role;
+  /** Confirmed through the emailed link. Shown in Settings; not required to sign in. */
+  emailVerified: boolean;
   /** Every tenant-owned query must filter by this. */
   tenantId: string;
 }
@@ -27,10 +29,10 @@ export const getCurrentUser = cache(async (): Promise<CurrentUser | null> => {
   const requestHeaders = await headers();
   const session = await getAuth().api.getSession({ headers: requestHeaders });
   if (!session || session.user.banned) return null;
-  const { id, name, email, role, tenantId } = session.user;
+  const { id, name, email, role, tenantId, emailVerified } = session.user;
   // A role outside our RBAC model (e.g. edited directly in the DB) is treated as signed out.
   if (!isRole(role) || !tenantId) return null;
-  return { id, name, email, role, tenantId };
+  return { id, name, email, role, tenantId, emailVerified: Boolean(emailVerified) };
 });
 
 // --- For API route handlers and server actions: throw typed errors. ---
