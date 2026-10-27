@@ -75,7 +75,8 @@ request-time API under Cache Components).
   `drafts.ts`: `generateDraft` (help articles only, holding-reply fallback), `reviewDraft` (the human approval step).
   Tests use `tests/ai/mock-knowledge.ts` (mock embedder, answer and draft models).
 - `src/server/email/`: `mailer.ts` (Resend over fetch, `getMailer()` may be null), `outbound.ts` (`planReplyEmail`:
-  never email demo tickets or reserved domains), `send-reply.ts` (the `send_reply_email` job). Tests use
+  never email demo tickets or reserved domains), `send-reply.ts` (the `send_reply_email` job), `threading.ts` (inbound replies with `[#n]` from the ticket's
+  customer join that ticket). Tests use
   `tests/email/mock-mailer.ts`.
 - `src/server/evals/golden.ts`: schema + parser for `evals/golden_tickets.jsonl`.
 - `seed/`: DEMO DATA pipeline. `lib/plan.ts` decides labels in code, `lib/generate.ts` has Claude write text,

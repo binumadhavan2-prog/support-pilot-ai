@@ -204,8 +204,15 @@ Agent replies, typed or approved from an AI draft, are emailed to the customer t
   while no key is set.
 - Each agent message on the ticket page shows its delivery status.
 
-Customer replies to that email are not threaded yet: they arrive through the inbound email
-endpoint as new tickets.
+**Threaded replies** (`src/server/email/threading.ts`): when the customer answers, their mail
+client keeps `[#1042]` in the subject. The inbound email endpoint adds that email to ticket #1042
+instead of opening a new ticket, but only if the sender is that ticket's customer (case-insensitive)
+in the same tenant; a ticket number alone is guessable, so anything else becomes a new ticket. The
+quoted history ("On ... wrote:", Outlook's "Original Message", `>` lines) is stripped, a pending,
+resolved or closed ticket moves back to open, and `ticket.customer_replied` is audited. The email's
+Message-ID is stored on the message, so a provider's retried delivery is added once (the response
+is 201 with `"threaded": true`, or 200 with `Idempotent-Replayed` for a retry). Routing the reply
+address to `POST /api/tickets/email` is set up at the email provider (an inbound webhook).
 
 ## AI triage
 
@@ -515,8 +522,9 @@ Docker instead. The build needs no secrets, startup validates the environment, a
 - Analytics days are UTC days (there is no per-tenant time zone yet), and the LLM-judge answer
   evaluation from Phase 6 is not built. Charts use the validated dataviz reference palette
   (`--viz-*` tokens in `globals.css`); every mark carries a visible value label.
-- Reply emails are not threaded: a customer's answer arrives as a new ticket. Outbound email is
-  tested with a mock mailer only; no real Resend account has been used yet.
+- Outbound email is tested with a mock mailer only; no real Resend account has been used yet.
+  Threading relies on the `[#number]` subject tag, so a reply whose subject was edited away from
+  it opens a new ticket.
 - Draft replies are tested with a mock model only (no API key yet); their real quality is
   unmeasured.
 - Knowledge-base answers are tested with a mock model only (no API key yet); their real quality

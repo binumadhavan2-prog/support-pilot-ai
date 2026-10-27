@@ -1,0 +1,2 @@
+ALTER TABLE "ticket_messages" ADD COLUMN "inbound_message_id" text;--> statement-breakpoint
+ALTER TABLE "ticket_messages" ADD CONSTRAINT "ticket_messages_tenant_inbound_uq" UNIQUE("tenant_id","inbound_message_id");

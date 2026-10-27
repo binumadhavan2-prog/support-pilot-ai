@@ -400,3 +400,108 @@ describe("API hardening", () => {
     expect((await listAs({ key: keyA })).status).toBe(200);
   });
 });
+
+describe("threaded email replies", () => {
+  const send = (as: As, raw: string) =>
+    emailRoute.POST(request("/api/tickets/email", as, { method: "POST", body: raw }));
+  const email = (from: string, subject: string, messageId: string, body: string[]) =>
+    [`From: ${from}`, `Subject: ${subject}`, `Message-ID: <${messageId}>`, "", ...body].join(
+      "\r\n",
+    );
+  const resolve = (id: string) =>
+    ticketRoute.PATCH(
+      request(
+        `/api/tickets/${id}`,
+        { key: keyA },
+        {
+          method: "PATCH",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ status: "resolved" }),
+        },
+      ),
+      { params: Promise.resolve({ id }) },
+    );
+
+  async function newTicket(sender: string, tag: string) {
+    const res = await send(
+      { key: keyA },
+      email(sender, `Export broken ${tag}`, `first-${tag}@mail.example`, ["The export fails."]),
+    );
+    return (await res.json()).ticket as { id: string; number: number };
+  }
+
+  it("adds the customer's reply to the ticket, without the quoted history, and reopens it", async () => {
+    const ticket = await newTicket("Mia Fischer <mia@example.test>", "t1");
+    expect((await resolve(ticket.id)).status).toBe(200);
+
+    const res = await send(
+      { key: keyA },
+      email(
+        "MIA@example.test",
+        `Re: Export broken t1 [#${ticket.number}]`,
+        "reply-t1@mail.example",
+        [
+          "Still failing for me, sorry.",
+          "",
+          "On Mon, 26 Oct 2026 at 10:00, Acme Support <help@acme.test> wrote:",
+          "> We fixed the export.",
+          "> --",
+          `> Ticket #${ticket.number}`,
+        ],
+      ),
+    );
+    expect(res.status).toBe(201);
+    const body = await res.json();
+    expect(body).toMatchObject({ threaded: true, ticket: { id: ticket.id, status: "open" } });
+
+    const detail = await (await getAs({ key: keyA }, ticket.id)).json();
+    expect(detail.ticket.status).toBe("open");
+    expect(detail.ticket.resolvedAt).toBeNull();
+    expect(detail.ticket.messages.map((m: { body: string }) => m.body)).toEqual([
+      "The export fails.",
+      "Still failing for me, sorry.",
+    ]);
+  });
+
+  it("adds a retried delivery only once", async () => {
+    const ticket = await newTicket("Noah <noah@example.test>", "t2");
+    const reply = email("noah@example.test", `Re: [#${ticket.number}]`, "reply-t2@mail.example", [
+      "One more detail.",
+    ]);
+    const first = await send({ key: keyA }, reply);
+    const retry = await send({ key: keyA }, reply);
+    expect([first.status, retry.status]).toEqual([201, 200]);
+    expect(retry.headers.get("idempotent-replayed")).toBe("true");
+    const detail = await (await getAs({ key: keyA }, ticket.id)).json();
+    expect(detail.ticket.messages).toHaveLength(2);
+  });
+
+  it("opens a new ticket when the sender isn't the ticket's customer", async () => {
+    const ticket = await newTicket("Ava <ava@example.test>", "t3");
+    const res = await send(
+      { key: keyA },
+      email("attacker@example.test", `Re: [#${ticket.number}]`, "spoof-t3@mail.example", [
+        "Please change the account owner.",
+      ]),
+    );
+    expect(res.status).toBe(201);
+    const body = await res.json();
+    expect(body.threaded).toBeUndefined();
+    expect(body.ticket.id).not.toBe(ticket.id);
+    const original = await (await getAs({ key: keyA }, ticket.id)).json();
+    expect(original.ticket.messages).toHaveLength(1);
+  });
+
+  it("never threads into another tenant's ticket", async () => {
+    const ticket = await newTicket("Liam <liam@example.test>", "t4");
+    // Same sender and number, but delivered with tenant B's key.
+    const res = await send(
+      { key: keyB },
+      email("liam@example.test", `Re: [#${ticket.number}]`, "cross-t4@mail.example", ["Hello"]),
+    );
+    const body = await res.json();
+    expect(body.threaded).toBeUndefined();
+    const original = await (await getAs({ key: keyA }, ticket.id)).json();
+    expect(original.ticket.messages).toHaveLength(1);
+  });
+});

@@ -57,6 +57,13 @@
       "when": 1792841819525,
       "tag": "0007_outbound_email",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1793082423063,
+      "tag": "0008_threaded_email_replies",
+      "breakpoints": true
     }
   ]
 }

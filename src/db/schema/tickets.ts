@@ -115,10 +115,14 @@ export const ticketMessages = pgTable(
     emailDetail: text("email_detail"),
     emailProviderId: text("email_provider_id"),
     emailSentAt: timestamp("email_sent_at", { withTimezone: true }),
+    // Message-ID of the inbound email this message came from, so a provider's retried delivery of
+    // a customer reply is added once. Unique per tenant (NULLs, i.e. other messages, don't clash).
+    inboundMessageId: text("inbound_message_id"),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (t) => [
     index("ticket_messages_ticket_created_idx").on(t.ticketId, t.createdAt),
+    unique("ticket_messages_tenant_inbound_uq").on(t.tenantId, t.inboundMessageId),
     sameTenantCascade(
       "ticket_messages_ticket_same_tenant_fk",
       [t.ticketId, t.tenantId],
