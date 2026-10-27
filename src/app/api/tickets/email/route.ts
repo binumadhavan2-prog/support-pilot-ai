@@ -2,6 +2,7 @@ import { getDb } from "@/db/client";
 import { withApiHandler } from "@/lib/api/handler";
 import { AppError } from "@/lib/errors";
 import { requireApiPermission } from "@/server/auth/api-auth";
+import { runQueuedJobsAfterResponse } from "@/server/inline-jobs";
 import { addEmailReplyToTicket, ticketNumberFromSubject } from "@/server/email/threading";
 import { MAX_RAW_EMAIL_BYTES, parseInboundEmail } from "@/server/inbound-email";
 import { createTicket } from "@/server/tickets";
@@ -24,6 +25,7 @@ export const POST = withApiHandler(async (request, { requestId }) => {
   if (!raw.trim()) throw new AppError("VALIDATION_ERROR", "Request body must be a raw email");
 
   const { input, messageId } = await parseInboundEmail(raw);
+  runQueuedJobsAfterResponse(); // triage of a new ticket, when there is no worker
 
   const number = ticketNumberFromSubject(input.subject);
   if (number !== null) {

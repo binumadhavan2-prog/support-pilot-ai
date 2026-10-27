@@ -52,6 +52,12 @@ const envSchema = z.object({
   // Password of the seeded demo accounts. When set, the login page offers "Try as Guest", which
   // signs in as the read-only demo viewer. Leave unset on any deployment with real users.
   DEMO_USER_PASSWORD: optionalString,
+  // "true" on hosts without a background worker: queued jobs (triage, reply emails) run right after
+  // the request that queued them (see server/inline-jobs.ts). The worker is preferred when possible.
+  RUN_JOBS_INLINE: z.preprocess(
+    (value) => (value === "" || value === undefined ? "false" : value),
+    z.enum(["true", "false"]).transform((v) => v === "true"),
+  ),
   // Outbound email through Resend. Without a key, agent replies are recorded but not emailed.
   RESEND_API_KEY: optionalString,
   // Sender of reply emails, e.g. "Acme Support <support@acme.com>". Required with RESEND_API_KEY.

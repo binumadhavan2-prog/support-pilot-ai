@@ -68,6 +68,12 @@ describe("parseEnv", () => {
     ).toBe("help@acme.io");
   });
 
+  it("parses RUN_JOBS_INLINE as a boolean, off by default", () => {
+    expect(parseEnv(valid).RUN_JOBS_INLINE).toBe(false);
+    expect(parseEnv({ ...valid, RUN_JOBS_INLINE: "true" }).RUN_JOBS_INLINE).toBe(true);
+    expect(() => parseEnv({ ...valid, RUN_JOBS_INLINE: "yes" })).toThrow(/RUN_JOBS_INLINE/);
+  });
+
   it("rejects an invalid LOG_LEVEL", () => {
     expect(() => parseEnv({ ...valid, LOG_LEVEL: "verbose" })).toThrow(/LOG_LEVEL/);
   });

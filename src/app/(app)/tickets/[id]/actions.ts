@@ -10,6 +10,7 @@ import { toActionError } from "@/server/action-error";
 import { generateDraft, reviewDraft, reviewSchema } from "@/server/ai/drafts";
 import { getDraftModel } from "@/server/ai/model";
 import { requirePermission } from "@/server/auth/session";
+import { runQueuedJobsAfterResponse } from "@/server/inline-jobs";
 import { isEmailConfigured } from "@/server/email/mailer";
 import { getEmbedder } from "@/server/knowledge/embedder";
 import { TICKET_STATUSES, addAgentReply, addInternalNote, updateTicket } from "@/server/tickets";
@@ -68,6 +69,7 @@ export async function reviewDraftAction(
       input,
       { emailEnabled: isEmailConfigured() },
     );
+    runQueuedJobsAfterResponse(); // the reply email, when there is no worker
     revalidatePath(`/tickets/${result.ticketId}`);
     revalidatePath("/approvals");
     revalidatePath("/inbox");
@@ -136,6 +138,7 @@ export async function replyAction(_prev: ActionState, formData: FormData): Promi
       { body },
       { emailEnabled: isEmailConfigured() },
     );
+    runQueuedJobsAfterResponse(); // the reply email, when there is no worker
     revalidatePath(`/tickets/${ticketId}`);
     revalidatePath("/inbox");
     return {

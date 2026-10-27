@@ -2,6 +2,7 @@ import { connection } from "next/server";
 import { getDb } from "@/db/client";
 import { parseJsonBody, withApiHandler } from "@/lib/api/handler";
 import { requireApiPermission } from "@/server/auth/api-auth";
+import { runQueuedJobsAfterResponse } from "@/server/inline-jobs";
 import { createdResponse, readIdempotencyKey } from "./idempotency";
 import {
   createTicket,
@@ -36,6 +37,7 @@ export const POST = withApiHandler(async (request, { requestId }) => {
   const { tenantId, actor } = await requireApiPermission(db, request, "ticket:write");
   const idempotencyKey = readIdempotencyKey(request);
   const input = await parseJsonBody(request, createTicketSchema);
+  runQueuedJobsAfterResponse(); // triage, when there is no worker
   const ticket = await createTicket(db, tenantId, input, {
     actor,
     source: "api",

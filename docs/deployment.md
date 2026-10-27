@@ -59,6 +59,7 @@ that has already been applied.
 | `BETTER_AUTH_SECRET` | A new random value: `openssl rand -base64 32`. Never reuse your dev secret  |
 | `BETTER_AUTH_URL`    | The production URL, e.g. `https://support-pilot.vercel.app` (no trailing /) |
 | `MODEL_CACHE_DIR`    | `/tmp/transformers`                                                         |
+| `RUN_JOBS_INLINE`    | `true`, unless you run the worker (step 5)                                  |
 | `ANTHROPIC_API_KEY`  | Optional. Turns on cited answers and draft replies                          |
 | `DEMO_USER_PASSWORD` | Optional, demo deployments only. Shows "Try as Guest"                       |
 | `RESEND_API_KEY`     | Optional. Reply emails (sent by the worker), password reset, verification   |
@@ -93,11 +94,17 @@ Sign in, then add agents and viewers at **Settings → Users**.
 `npm run seed:load` loads the fictional Acme Cloud dataset, both with the same variables as
 above. Don't run either against a database with real users.
 
-## 5. Run the job worker
+## 5. Process the job queue
 
-New tickets queue a `triage_ticket` job. Something has to process the queue, and a Vercel
-function can't, because the worker polls continuously. Run the `tools` image on any container
-host as a background worker (no public port):
+New tickets queue a `triage_ticket` job, and replies queue a `send_reply_email` job. A Vercel
+function can't run the worker (it polls continuously), so pick one:
+
+- **No extra host (simplest):** set `RUN_JOBS_INLINE=true`. After a request that queues work, the
+  app processes up to 10 queued jobs once the response is sent (Next.js `after()`), so triage and
+  emails happen within seconds with no worker. Busy deployments, or slow Claude calls, are better
+  served by a worker.
+- **A worker:** run the `tools` image on any container host as a background worker (no public
+  port), and leave `RUN_JOBS_INLINE` unset:
 
 ```bash
 docker build --target tools -t support-pilot-ai-tools .
@@ -108,8 +115,7 @@ Give it `DATABASE_URL` (the pooled string is fine; the worker uses one connectio
 `ANTHROPIC_API_KEY`, and `RESEND_API_KEY` + `EMAIL_FROM` to send reply emails. The image's default command is the worker. It stops cleanly on SIGTERM,
 finishing the job in progress.
 
-Without a worker, the app still works: tickets just stay untriaged (no AI summary, suggested
-team or priority). Failed jobs retry twice with backoff, then end as `failed`.
+With neither, the app still works: tickets just stay untriaged and replies aren't emailed. Failed jobs retry twice with backoff, then end as `failed`.
 
 ## Embeddings on Vercel
 

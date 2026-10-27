@@ -397,6 +397,7 @@ with a clear message if any are invalid. Error messages name the variable but ne
 | `ANSWER_MODEL`       | No         | Model for knowledge-base answers (default `claude-opus-5-5`)       |
 | `SEMANTIC_SEARCH`    | No         | `off` = keyword search only, no local model (saves memory)         |
 | `MODEL_CACHE_DIR`    | No         | Absolute path for the embedding model (default `.cache/`)          |
+| `RUN_JOBS_INLINE`    | No         | `true`: run queued jobs after each request (hosts with no worker)  |
 | `DEMO_USER_PASSWORD` | No         | Demo accounts' password; enables "Try as Guest"                    |
 | `RESEND_API_KEY`     | No         | Reply, password-reset and verification emails (needs `EMAIL_FROM`) |
 | `EMAIL_FROM`         | With key   | Sender, e.g. `Acme Support <support@acme.com>`                     |

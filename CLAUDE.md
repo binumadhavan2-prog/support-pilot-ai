@@ -63,7 +63,8 @@ request-time API under Cache Components).
 - `src/server/sla.ts`: SLA targets by priority and the clocks, in TS (`ticketSla`) and SQL (`slaOverdueSql`, ...);
   keep both in sync. Internal notes are `ticket_messages.internal` (`addInternalNote` in `tickets.ts`).
 - `src/server/jobs.ts`: Postgres job queue (`enqueueJob` inside the caller's transaction, `processNextJob`
-  with injected `JobServices`). `scripts/worker.mts` runs it.
+  with injected `JobServices`). `scripts/worker.mts` runs it; with `RUN_JOBS_INLINE=true`, `inline-jobs.ts` drains it
+  after requests that queue work (call `runQueuedJobsAfterResponse()` there).
 - `src/server/ai/`: `redact.ts` (PII -> `[EMAIL_1]` tokens, reversible), `triage.ts` (prompt
   `prompts/triage_v1.md`, Zod output schema, Claude call, routing rules, `triageTicket` job body),
   `model.ts` (Claude with a key, else `builtin.ts`: keyword triage + template drafts, labeled Rules / Template,

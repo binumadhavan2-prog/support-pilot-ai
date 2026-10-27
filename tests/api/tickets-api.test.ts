@@ -9,11 +9,18 @@ import { createTestDb, type TestDb } from "../db/test-db";
  * in-memory Postgres. Only the Next.js request plumbing is replaced: `getDb`/`getAuth` return
  * the test instances and `headers()` returns the simulated browser's cookies.
  */
-const ctx = vi.hoisted(() => ({
-  db: undefined as unknown as TestDb,
-  auth: undefined as unknown as Auth,
-  cookies: new Headers(),
-}));
+const ctx = vi.hoisted(() => {
+  // Route handlers read the validated environment (e.g. RUN_JOBS_INLINE), as in a real deployment,
+  // where the server refuses to start without these. getDb/getAuth are swapped below, so the
+  // placeholders are never used to connect.
+  process.env.DATABASE_URL ??= "postgres://placeholder@localhost:5432/placeholder";
+  process.env.BETTER_AUTH_SECRET ??= "test-secret-that-is-at-least-32-characters-long";
+  return {
+    db: undefined as unknown as TestDb,
+    auth: undefined as unknown as Auth,
+    cookies: new Headers(),
+  };
+});
 
 vi.mock("@/db/client", () => ({ getDb: () => ctx.db }));
 vi.mock("@/server/auth/auth", async (importOriginal) => ({
